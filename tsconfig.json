@@ -7,7 +7,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "@vue/runtime-core": [
+        "node_modules/@vue/runtime-core/dist/runtime-core.d.ts"
+      ]
+    },
+    "types": ["vue-router"]
   }
 }
