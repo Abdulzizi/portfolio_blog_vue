@@ -11,7 +11,12 @@ export default [
     meta: { title: "About Page", authRequired: false },
     component: () => import("../views/About/index.vue"),
   },
-
+  {
+    path: "/work",
+    name: "work",
+    meta: { title: "Work Page", authRequired: false },
+    component: () => import("../views/WorkPage/index.vue"),
+  },
 
   // Redirect any unmatched routes to the 404 page. This may
   // require some server configuration to work in production:
