@@ -1,8 +1,10 @@
 <template>
-    <div class="absolute left-0 w-full border-black bg-white text-xs overflow-hidden"
-        :class="position === 'top' ? 'top-0 border-b' : 'bottom-0 border-t'">
-        <div class="flex whitespace-nowrap animate-scroll px-4">
-            <span class="px-4">WEB DEVELOPMENT ✖ CONTENT CREATION ✖ SOCIAL MEDIA ✖ CONTENT CREATIVE ✖ AI</span>
+    <div class="absolute left-0 w-full border-black text-xs font-black uppercase overflow-hidden"
+        :class="position === 'top' ? 'top-0 border-b-2 bg-yellow-400' : 'bottom-0 border-t-2 bg-white'">
+        <div class="flex whitespace-nowrap animate-scroll">
+            <span v-for="n in 3" :key="n" class="px-2 tracking-widest">
+                ⚡ WEB DEVELOPMENT ✖ CONTENT CREATION ✖ SOCIAL MEDIA ✖ CONTENT CREATIVE ✖ AI ⚡
+            </span>
         </div>
     </div>
 </template>
@@ -17,19 +19,28 @@ defineProps({
 </script>
 
 <style scoped>
-/* Scrolling text animation */
+/* Brutalist Scrolling Text Animation */
 @keyframes scroll {
-    from {
+    0% {
         transform: translateX(100%);
     }
 
-    to {
+    50% {
+        transform: translateX(-50%);
+    }
+
+    100% {
         transform: translateX(-100%);
     }
 }
 
 .animate-scroll {
     display: inline-block;
-    animation: scroll 10s linear infinite;
+    animation: scroll 5s linear infinite;
+}
+
+/* Brutalist Font */
+body {
+    font-family: "Arial Black", sans-serif;
 }
 </style>

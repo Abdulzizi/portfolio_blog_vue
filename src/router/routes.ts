@@ -17,6 +17,18 @@ export default [
     meta: { title: "Work Page", authRequired: false },
     component: () => import("../views/WorkPage/index.vue"),
   },
+  {
+    path: "/connect",
+    name: "connect",
+    meta: { title: "Connect Page", authRequired: false },
+    component: () => import("../views/ContactPage/index.vue"),
+  },
+  {
+    path: "/blog",
+    name: "blog",
+    meta: { title: "Blog Page", authRequired: false },
+    component: () => import("../views/utility/coming-soon.vue"),
+  },
 
   // Redirect any unmatched routes to the 404 page. This may
   // require some server configuration to work in production:
