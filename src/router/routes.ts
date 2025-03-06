@@ -27,7 +27,13 @@ export default [
     path: "/blog",
     name: "blog",
     meta: { title: "Blog Page", authRequired: false },
-    component: () => import("../views/utility/coming-soon.vue"),
+    component: () => import("../views/BlogPage/index.vue"),
+  },
+  {
+    path: "/blog/:id",
+    name: "blogpost",
+    meta: { title: "Blog Post", authRequired: false },
+    component: () => import("../views/SingleBlogPage/index.vue"),
   },
 
   // Redirect any unmatched routes to the 404 page. This may
