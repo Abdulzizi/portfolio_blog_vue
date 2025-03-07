@@ -1,23 +1,25 @@
 <template>
     <Layouts>
-        <div class="w-full min-h-screen bg-yellow-400 text-black px-6 py-12 md:px-8 md:py-16 border-8 border-black">
+        <div
+            class="w-full min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--primary-foreground))] px-6 py-12 md:px-8 md:py-16 border-8 border-[hsl(var(--border))]">
             <router-link to="/blog" class="text-lg font-bold underline">&larr; Back to Blog</router-link>
 
             <!-- Blog Post Image -->
-            <div class="mt-6 border-8 border-black bg-white">
+            <div class="mt-6 border-8 border-[hsl(var(--border))] bg-[hsl(var(--secondary))]">
                 <img :src="post.image" :alt="post.title"
-                    class="w-full h-[250px] md:h-[400px] object-cover border-8 border-black">
+                    class="w-full h-[250px] md:h-[400px] object-cover border-8 border-[hsl(var(--border))]">
             </div>
 
             <!-- Blog Post Title -->
-            <h1 class="mt-4 text-[10vw] md:text-[7vw] font-black uppercase border-b-8 border-black pb-3">
+            <h1 class="mt-4 text-[10vw] md:text-[7vw] font-black uppercase border-b-8 border-[hsl(var(--border))] pb-3">
                 {{ post.title }}
             </h1>
 
             <p class="mt-2 text-lg md:text-xl">{{ post.date }}</p>
 
             <div class="mt-2 flex flex-wrap gap-2">
-                <span v-for="tag in post.tags" :key="tag" class="px-3 py-1 bg-black text-yellow-400 text-sm font-bold">
+                <span v-for="tag in post.tags" :key="tag"
+                    class="px-3 py-1 bg-[hsl(var(--foreground))] text-[hsl(var(--primary))] text-sm font-bold">
                     #{{ tag }}
                 </span>
             </div>

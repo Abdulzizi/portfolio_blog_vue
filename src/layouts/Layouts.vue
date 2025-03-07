@@ -29,7 +29,7 @@
 
         <!-- Bottom Navbar (Desktop only) -->
         <nav
-            class="fixed bottom-0 left-0 w-full border-t-4 border-black bg-white grid grid-cols-5 text-black text-xs sm:text-base hidden sm:grid">
+            class="fixed bottom-0 left-0 w-full border-t-4 border-black bg-white grid-cols-5 text-black text-xs sm:text-base hidden sm:grid">
             <router-link to="/work" class="block w-full">
                 <button :class="getButtonClass('/work')">WORK</button>
             </router-link>
@@ -65,18 +65,11 @@ const toggleMenu = () => {
     menuOpen.value = !menuOpen.value;
 };
 
-// Define a computed property to set the background dynamically
-const layoutBgClass = computed(() => {
-    if (route.path === '/about') return 'bg-yellow-400 text-black';
-    if (route.path === '/work') return 'bg-black text-yellow-400';
-    return 'bg-white text-black'; // Default
-});
-
 // Function to get button class based on active route
 const getButtonClass = (path) => {
     return route.path === path
-        ? 'py-4 sm:py-6 text-sm sm:text-xl font-black border-r-4 border-black w-full h-full uppercase bg-yellow-400'
-        : 'py-4 sm:py-6 text-sm sm:text-xl font-black border-r-4 border-black w-full h-full uppercase bg-white hover:bg-yellow-300 transition duration-100';
+        ? 'py-4 sm:py-6 text-sm sm:text-xl font-black border-r-4 border-black w-full h-full uppercase bg-primary'
+        : 'py-4 sm:py-6 text-sm sm:text-xl font-black border-r-4 border-black w-full h-full uppercase bg-white hover:bg-accent hover:text-white transition duration-100';
 };
 </script>
 
