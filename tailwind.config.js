@@ -7,7 +7,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         serif: ["Merriweather", "serif"],
-        mono: ["IBM Plex Mono", "monospace"], // Custom monospace font
+        mono: ["IBM Plex Mono", "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",

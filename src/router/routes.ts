@@ -36,6 +36,14 @@ export default [
     component: () => import("../views/SingleBlogPage/index.vue"),
   },
 
+  // ADMIN
+  {
+    path: "/admin/user",
+    name: "admin-user",
+    meta: { title: "Dashboard", authRequired: false },
+    component: () => import("../views/Admin/User/index.vue"),
+  },
+
   // Redirect any unmatched routes to the 404 page. This may
   // require some server configuration to work in production:
   // https://router.vuejs.org/en/essentials/history-mode.html#example-server-configurations
