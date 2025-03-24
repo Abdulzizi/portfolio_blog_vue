@@ -10,15 +10,15 @@
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-6">
                 <router-link v-for="link in links" :key="link.to" :to="link.to"
-                    class="text-sm font-medium transition hover:text-blue-600 dark:hover:text-blue-400"
-                    active-class="font-bold text-blue-600 dark:text-blue-400">
+                    class="text-sm font-medium transition hover:text-purple-400"
+                    active-class="font-bold text-purple-400">
                     {{ link.label }}
                 </router-link>
             </nav>
 
             <!-- Mobile Menu Button -->
             <button @click="toggleMenu"
-                class="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <svg v-if="!isMobileMenuOpen" class="w-6 h-6 text-white" fill="none" stroke="currentColor"
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 6h16M4 12h16M4 18h16" />
@@ -35,8 +35,8 @@
             <div v-if="isMobileMenuOpen" class="absolute inset-x-0 top-16 bg-gray-900 border-t shadow-md md:hidden">
                 <div class="p-4 flex flex-col space-y-3">
                     <router-link v-for="link in links" :key="link.to" :to="link.to"
-                        class="text-white hover:text-blue-600 dark:hover:text-blue-400"
-                        active-class="font-bold text-blue-600 dark:text-blue-400" @click="closeMenu">
+                        class="text-white hover:text-purple-400" active-class="font-bold text-purple-400"
+                        @click="closeMenu">
                         {{ link.label }}
                     </router-link>
                 </div>
@@ -67,9 +67,6 @@ const toggleMenu = () => {
 const closeMenu = () => {
     isMobileMenuOpen.value = false;
 };
-
-// Dark Mode State
-const isDarkMode = ref(localStorage.getItem("theme") === "dark");
 
 const MountainIcon = {
     template: `

@@ -22,7 +22,7 @@ const mainClass = computed(() => [
         <AdminNavbar />
         <main :class="mainClass">
             <!-- Use the title prop properly -->
-            <h1 class="text-3xl font-bold mb-4">{{ title }}</h1>
+            <h1 class="text-3xl font-bold mb-4 font-sans">{{ title }}</h1>
             <slot />
         </main>
     </div>
