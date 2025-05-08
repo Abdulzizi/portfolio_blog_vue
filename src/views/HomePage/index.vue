@@ -1,18 +1,19 @@
 <template>
     <div class="min-h-screen bg-white">
-        <!-- Marquee Banner -->
         <Marquee />
 
         <!-- Grid Layout with Dynamic Scaling -->
         <div ref="gridRef" @mouseleave="clearHover" class="grid gap-px bg-black transition-all duration-500 ease-in-out"
-            :style="gridStyle">
+            :class="gridResponsiveClass" :style="gridStyle">
             <!-- First Row -->
-            <GridBox label="WORK" @hover="hover('work')" :active="hovered === 'work'" class="row-span-2" />
-            <GridBox label="CONNECT" @hover="hover('connect')" :active="hovered === 'connect'" class="col-span-2" />
+            <GridBox label="WORK" @hover="hover('work')" :active="hovered === 'work'"
+                :class="{ 'row-span-2': isDesktop }" />
+            <GridBox label="CONNECT" @hover="hover('connect')" :active="hovered === 'connect'"
+                :class="{ 'col-span-2': isDesktop }" />
 
             <!-- Center Logo -->
             <div class="bg-yellow-300 flex items-center justify-center border border-black transition-all duration-500"
-                @mouseenter="hover('logo')" @mouseleave="hover(null)">
+                :class="{ 'order-first': !isDesktop }" @mouseenter="hover('logo')" @mouseleave="hover(null)">
                 <div class="border border-black p-4 relative transition-transform duration-300"
                     :class="{ 'scale-110': hovered === 'logo' }">
                     <div class="text-4xl font-black italic transform -rotate-12">ABDULZIZI</div>
@@ -22,14 +23,14 @@
             </div>
 
             <!-- Second Row -->
-            <GridBox label="ABOUT" @hover="hover('about')" :active="hovered === 'about'" class="row-span-2"
-                :style="{ zIndex: active ? 10 : 1 }" />
+            <GridBox label="ABOUT" @hover="hover('about')" :active="hovered === 'about'"
+                :class="{ 'row-span-2': isDesktop }" />
             <GridBox label="COMMUNITY" @hover="hover('community')" :active="hovered === 'community'"
-                class="col-span-2" />
+                :class="{ 'col-span-2': isDesktop }" />
         </div>
 
         <!-- Footer -->
-        <div class="border-t border-black py-2 flex flex-wrap justify-center items-center text-sm">
+        <div class="border-t border-black py-2 flex-wrap justify-center items-center text-sm hidden md:flex">
             <span class="px-2">× CONTENT CREATION ×</span>
             <span class="px-2">× BRANDING ×</span>
             <span class="px-2">× VIDEO EDITING ×</span>
@@ -47,12 +48,34 @@ import Marquee from './Marquee.vue'
 
 const hovered = ref(null)
 const gridRef = ref(null)
+const windowWidth = ref(window.innerWidth)
 
-const hover = (key) => {
-    hovered.value = key
+// Track window width for responsive behavior
+const updateWindowWidth = () => {
+    windowWidth.value = window.innerWidth
 }
 
+// Check if on desktop
+const isDesktop = computed(() => {
+    return windowWidth.value >= 768
+})
+
+const hover = (key) => {
+    // Only enable hover effects on desktop
+    if (isDesktop.value) {
+        hovered.value = key
+    }
+}
+
+const gridResponsiveClass = computed(() => {
+    return isDesktop.value
+        ? 'grid-cols-3 grid-rows-3'
+        : 'grid-cols-1 auto-rows-min'
+})
+
 const handleDocumentMouseMove = (event) => {
+    if (!isDesktop.value) return
+
     if (gridRef.value) {
         const rect = gridRef.value.getBoundingClientRect()
         const isInsideGrid =
@@ -68,7 +91,16 @@ const handleDocumentMouseMove = (event) => {
 }
 
 const gridStyle = computed(() => {
-    // Default grid layout (when nothing is hovered)
+    // For mobile, use simple stacked layout
+    if (!isDesktop.value) {
+        return {
+            gridTemplateColumns: '1fr',
+            gridTemplateRows: 'auto',
+            height: 'auto'
+        }
+    }
+
+    // Desktop layout with hover effects
     let colTemplate = '1fr 2fr 1fr'
     let rowTemplate = '1fr 2fr 1fr'
 
@@ -107,17 +139,19 @@ const clearHover = () => {
 
 onMounted(() => {
     document.addEventListener('mousemove', handleDocumentMouseMove)
+    window.addEventListener('resize', updateWindowWidth)
 })
 
 onBeforeUnmount(() => {
     document.removeEventListener('mousemove', handleDocumentMouseMove)
+    window.removeEventListener('resize', updateWindowWidth)
 })
 </script>
 
 <style>
-/* Custom font styling */
-body {
-    font-family: 'Helvetica', 'Arial', sans-serif;
-    letter-spacing: -0.02em;
+@media (max-width: 767px) {
+    .grid-layout>div {
+        min-height: 150px;
+    }
 }
 </style>
