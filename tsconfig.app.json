@@ -20,5 +20,6 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "../views/utility/*.vue"
-  ]
+  ],
+  "exclude": ["./src/views/HomePage/Scrollbar.vue"]
 }
