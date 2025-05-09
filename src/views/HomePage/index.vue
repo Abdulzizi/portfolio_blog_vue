@@ -3,8 +3,9 @@
         <Marquee />
 
         <!-- Grid Layout with Dynamic Scaling -->
-        <div ref="gridRef" @mouseleave="clearHover" class="grid gap-px bg-black transition-all duration-500 ease-in-out"
-            :class="gridResponsiveClass" :style="gridStyle">
+        <div ref="gridRef" @mouseleave="clearHover"
+            class="grid  gap-px bg-black transition-all duration-500 ease-in-out" :class="gridResponsiveClass"
+            :style="gridStyle">
             <!-- First Row -->
             <GridBox label="WORK" @hover="hover('work')" :active="hovered === 'work'"
                 :class="{ 'row-span-2': isDesktop }" />
@@ -14,11 +15,13 @@
             <!-- Center Logo -->
             <div class="bg-yellow-300 flex items-center justify-center border border-black transition-all duration-500"
                 :class="{ 'order-first': !isDesktop }" @mouseenter="hover('logo')" @mouseleave="hover(null)">
-                <div class="border border-black p-4 relative transition-transform duration-300"
-                    :class="{ 'scale-110': hovered === 'logo' }">
-                    <div class="text-4xl font-black italic transform -rotate-12">ABDULZIZI</div>
+                <div class=" p-4 relative transition-transform duration-300"
+                    :class="{ 'scale-150': hovered === 'logo' }">
+                    <!-- <div class="text-4xl font-black italic transform -rotate-12">ABDULZIZI</div>
                     <span class="absolute top-0 right-0 text-xl">×</span>
-                    <span class="absolute bottom-0 left-0 text-xl">×</span>
+                    <span class="absolute bottom-0 left-0 text-xl">×</span> -->
+
+                    <img src="@/assets/images/logo-wo-bg.png" alt="Logo" class="h-52 opacity-90" />
                 </div>
             </div>
 
@@ -30,21 +33,16 @@
         </div>
 
         <!-- Footer -->
-        <div class="border-t border-black py-2 flex-wrap justify-center items-center text-sm hidden md:flex">
-            <span class="px-2">× CONTENT CREATION ×</span>
-            <span class="px-2">× BRANDING ×</span>
-            <span class="px-2">× VIDEO EDITING ×</span>
-            <span class="px-2">× WEB DEVELOPMENT ×</span>
-            <span class="px-2">× WEB DESIGN ×</span>
-            <span class="px-2">× SOCIAL MEDIA ×</span>
-        </div>
+        <Footer />
     </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+
 import GridBox from './GridBox.vue'
 import Marquee from './Marquee.vue'
+import Footer from './Footer.vue'
 
 const hovered = ref(null)
 const gridRef = ref(null)
@@ -118,8 +116,8 @@ const gridStyle = computed(() => {
         rowTemplate = '0.8fr 2.4fr 0.8fr' // Middle row slightly grows
     }
     else if (hovered.value === 'about') {
-        colTemplate = '1.5fr 1fr 2fr' // Adjusted to ensure growth
-        rowTemplate = '1fr 1.8fr 1.2fr'
+        colTemplate = '0.5fr 1.5fr 2fr' // Right column grows
+        rowTemplate = '0.5fr 2fr 1.5fr' // Top rows grow
     }
     else if (hovered.value === 'community') {
         colTemplate = '0.5fr 3fr 0.5fr' // Middle column grows
