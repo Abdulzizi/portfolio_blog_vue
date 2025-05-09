@@ -4,8 +4,8 @@
 
         <!-- Grid Layout with Dynamic Scaling -->
         <div ref="gridRef" @mouseleave="clearHover"
-            class="grid  gap-px bg-black transition-all duration-500 ease-in-out" :class="gridResponsiveClass"
-            :style="gridStyle">
+            class="grid  gap-px bg-black transition-all duration-500 ease-in-out cursor-pointer"
+            :class="gridResponsiveClass" :style="gridStyle">
             <!-- First Row -->
             <GridBox label="WORK" @hover="hover('work')" :active="hovered === 'work'"
                 :class="{ 'row-span-2': isDesktop }" />
@@ -27,7 +27,7 @@
 
             <!-- Second Row -->
             <GridBox label="ABOUT" @hover="hover('about')" :active="hovered === 'about'"
-                :class="{ 'row-span-2': isDesktop }" />
+                :class="{ 'row-span-2': isDesktop }" @click="$router.push('/about')" />
             <GridBox label="COMMUNITY" @hover="hover('community')" :active="hovered === 'community'"
                 :class="{ 'col-span-2': isDesktop }" />
         </div>
