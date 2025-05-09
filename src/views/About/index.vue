@@ -54,4 +54,8 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useLenis } from "@/composables/useLenis";
+
+useLenis();
+</script>
