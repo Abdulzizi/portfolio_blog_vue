@@ -1,57 +1,51 @@
-<script setup>
-import Button from '@/components/ui/button/Button.vue';
-</script>
-
 <template>
-    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
-        <!-- Animated 404 Title -->
-        <h1 class="text-7xl font-extrabold text-red-600 flex items-center space-x-2">
-            <i class="bx bx-buoy bx-spin text-blue-500 text-5xl animate-pulse"></i>
-            4
-            <i class="bx bx-buoy bx-spin text-blue-500 text-5xl animate-pulse"></i>
-            0
-            <i class="bx bx-buoy bx-spin text-blue-500 text-5xl animate-pulse"></i>
-            4
-        </h1>
+    <div class="min-h-screen bg-white flex flex-col">
+        <!-- Main Content -->
+        <div ref="content" class="flex-grow flex flex-col items-center justify-center px-6 opacity-0">
+            <!-- Large 404 -->
+            <div class="text-center mb-8">
+                <h1 class="font-black text-8xl md:text-9xl lg:text-[12rem] leading-none">404</h1>
+            </div>
 
-        <!-- Error Message -->
-        <h2 class="text-2xl font-semibold text-gray-800 mt-3">Oops! Page Not Found</h2>
-        <p class="text-gray-500 max-w-lg text-center mt-2">
-            The page you're looking for might have been moved, deleted, or does not exist.
-        </p>
+            <!-- Error Message -->
+            <div class="text-center max-w-2xl">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">PAGE NOT FOUND</h2>
+                <p class="text-lg mb-8">The page you're looking for doesn't exist or has been moved.</p>
+            </div>
 
-        <!-- Action Button -->
-        <router-link to="/">
-            <!-- <button class="mt-6 px-6 py-3 bg-blue-500 text-white text-lg font-medium rounded-lg shadow-md transition-all 
-        hover:bg-blue-600 hover:shadow-lg active:scale-95">
-                Go Back Home
-            </button> -->
-            <Button variant="primary" size="lg"
-                class="mt-6 px-6 py-3 bg-blue-500 text-white text-lg border-0 rounded-md shadow-md transition-all hover:bg-blue-600 hover:shadow-lg active:scale-95">
-                Go Back Home
-            </Button>
-        </router-link>
+            <!-- Yellow Box with Home Link -->
+            <div>
+                <router-link to="/">
+                    <Button
+                        class="bg-yellow-300 border border-black text-3xl p-10 hover:bg-yellow-400 transition-colors font-black">
+                        HOME
+                    </Button>
+                </router-link>
+            </div>
+        </div>
 
-        <!-- Error Image -->
-        <img src="@/assets/images/error-img.png" alt="Error Image" class="mt-8 w-80 opacity-90 animate-fadeIn" />
+        <!-- Bottom Border -->
+        <div class="border-t border-black h-px"></div>
     </div>
 </template>
 
-<style scoped>
-/* Custom Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
+<script setup>
+import { ref, onMounted } from "vue"
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+import gsap from "gsap"
 
-.animate-fadeIn {
-    animation: fadeIn 1.2s ease-in-out;
-}
-</style>
+import Button from "@/components/ui/button/Button.vue"
+
+const content = ref(null)
+
+onMounted(() => {
+    gsap.to(content.value, {
+        opacity: 1,
+        y: 0,
+        duration: 4,
+        ease: 'power2.out',
+        from: { y: 20 }
+    })
+})
+
+</script>
