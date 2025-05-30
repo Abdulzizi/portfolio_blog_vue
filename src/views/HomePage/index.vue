@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-white">
+    <div class="min-h-screen bg-white" ref="fadeInSection">
         <Marquee />
 
         <!-- Grid Layout with Dynamic Scaling -->
@@ -39,11 +39,13 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import gsap from 'gsap';
 
 import GridBox from './GridBox.vue'
 import Marquee from './Marquee.vue'
 import Footer from './Footer.vue'
 
+const fadeInSection = ref(null)
 const hovered = ref(null)
 const gridRef = ref(null)
 const windowWidth = ref(window.innerWidth)
@@ -138,6 +140,12 @@ const clearHover = () => {
 onMounted(() => {
     document.addEventListener('mousemove', handleDocumentMouseMove)
     window.addEventListener('resize', updateWindowWidth)
+
+    gsap.fromTo(
+        fadeInSection.value,
+        { opacity: 0 },
+        { opacity: 1, duration: 1.5 }
+    )
 })
 
 onBeforeUnmount(() => {

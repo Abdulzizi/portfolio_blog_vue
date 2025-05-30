@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto max-w-7xl px-6 py-8 sm:px-6 lg:px-0 min-h-screen flex flex-col">
+    <div class="mx-auto max-w-7xl px-6 py-8 sm:px-6 lg:px-0 min-h-screen flex flex-col" ref="slideInSection">
 
         <div class="text-center mb-12 md:mb-20 pt-10 sm:pt-16">
             <h1 class="font-black text-5xl md:text-7xl lg:text-9xl leading-none">THIS IS WHO I AM</h1>
@@ -56,6 +56,30 @@
 
 <script setup>
 import { useLenis } from "@/composables/useLenis";
+import gsap from "gsap";
+import { ref, onMounted } from "vue";
+
+const slideInSection = ref(null)
+
+const animatePage = () => {
+    gsap.fromTo(
+        slideInSection.value,
+        {
+            opacity: 0,
+            y: 100, // Start from below
+        },
+        {
+            opacity: 1,
+            y: 0, // Slide up to its natural position
+            duration: 2, // Duration of the animation
+            ease: "power4.out", // Ease for smooth transition
+        }
+    );
+};
+
+onMounted(() => {
+    animatePage();
+})
 
 useLenis();
 </script>
