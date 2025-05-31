@@ -4,7 +4,6 @@ import "lenis/dist/lenis.css";
 import "vue-sonner/style.css";
 
 import pinia from "@/state/pinia";
-
 import { useAuthStore } from "@/state/pinia";
 import { axiosInterceptors } from "@/core/interceptor/axios-interceptor";
 
@@ -13,11 +12,12 @@ import router from "./router";
 
 const app = createApp(App);
 
-app.use(router).use(pinia);
+app.use(pinia);
 
 const authStore = useAuthStore();
 await authStore.initAuth();
 
 axiosInterceptors();
 
+app.use(router);
 app.mount("#app");

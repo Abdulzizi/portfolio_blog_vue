@@ -123,10 +123,9 @@ export const useAuthStore = defineStore("auth", {
     },
 
     getToken(): string {
-      if (this.bearerToken) {
-        return this.bearerToken;
-      }
-      return localStorage.getItem("token") || "";
+      const token = localStorage.getItem("token") || "";
+      // console.log("getToken called, token from localStorage:", token);
+      return token;
     },
 
     async saveUser(user: User): Promise<void> {

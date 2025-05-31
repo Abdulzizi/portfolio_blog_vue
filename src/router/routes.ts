@@ -19,6 +19,12 @@ export default [
     meta: { title: "Dashboard Page", authRequired: true },
     component: () => import("../views/Admin/Dashboard/index.vue"),
   },
+  {
+    path: "/admin/users",
+    name: "admin-users",
+    meta: { title: "Admin Users Page", authRequired: true },
+    component: () => import("../views/Admin/User/index.vue"),
+  },
 
   {
     path: "/about",

@@ -3,7 +3,6 @@ export interface User {
   name: string;
   email: string;
   role: string;
-  avatar?: string;
   created_at?: string;
   updated_at?: string;
   [key: string]: any;
