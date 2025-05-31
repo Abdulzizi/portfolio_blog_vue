@@ -5,6 +5,14 @@ export default [
     meta: { title: "Home Page", authRequired: false },
     component: () => import("../views/HomePage/index.vue"),
   },
+
+  {
+    path: "/login",
+    name: "login",
+    meta: { title: "Login Page", authRequired: false },
+    component: () => import("../views/Auth/Login/index.vue"),
+  },
+
   {
     path: "/about",
     name: "about",
