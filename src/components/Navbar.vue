@@ -102,7 +102,7 @@ const leftNavItems = [
 ]
 
 const rightNavItems = [
-    { name: 'COMMUNITY', path: '/community' },
+    { name: 'BLOG', path: '/blog' },
     { name: 'CONNECT', path: '/connect' }
 ]
 

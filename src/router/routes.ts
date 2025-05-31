@@ -17,6 +17,18 @@ export default [
     meta: { title: "Work Page", authRequired: false },
     component: () => import("../views/WorkPage/index.vue"),
   },
+  {
+    path: "/all-projects",
+    name: "all projects",
+    meta: { title: "Projects Page", authRequired: false },
+    component: () => import("../views/WorkPage/ProjectsPage.vue"),
+  },
+  {
+    path: "/project/:slug",
+    name: "project",
+    meta: { title: "Project Page", authRequired: false },
+    component: () => import("../views/WorkPage/ProjectDetail.vue"),
+  },
 
   // Redirect any unmatched routes to the 404 page. This may
   // require some server configuration to work in production:

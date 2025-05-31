@@ -1,7 +1,6 @@
 <template>
     <Layout>
         <div v-if="isDesktop" class="relative h-screen md:h-screen overflow-hidden bg-white">
-            <!-- Horizontal Scrolling Container -->
             <div ref="scrollContainer" class="flex h-full">
                 <!-- Slide 1: Hero Text -->
                 <div class="w-screen h-full flex-shrink-0 flex items-center justify-start px-6 md:px-20">
@@ -16,98 +15,9 @@
 
                 <!-- Slide 2: Featured Projects Grid -->
                 <div class="w-screen h-full flex-shrink-0 flex items-center px-6 md:px-20">
-                    <div ref="projectsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full h-4/5">
-                        <!-- Project 1: Large Featured -->
-                        <div
-                            class="md:col-span-2 md:row-span-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                            <div class="h-full p-8 flex flex-col justify-between text-white">
-                                <div>
-                                    <span class="text-sm opacity-80">WEB DESIGN</span>
-                                    <h3 class="text-3xl font-bold mt-2">E-Commerce Platform</h3>
-                                    <p class="mt-4 opacity-90">Modern shopping experience with seamless checkout flow
-                                    </p>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm">2024</span>
-                                    <div
-                                        class="w-8 h-8 border border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors duration-300">
-                                        <ChevronRight class="w-4 h-4" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 2: Brand Identity -->
-                        <div
-                            class="bg-yellow-300 rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                            <div class="h-full p-6 flex flex-col justify-between">
-                                <div>
-                                    <span class="text-sm opacity-80">BRANDING</span>
-                                    <h3 class="text-xl font-bold mt-2">Tech Startup</h3>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm">2024</span>
-                                    <div
-                                        class="w-6 h-6 border border-black rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300">
-                                        <ChevronRight class="w-3 h-3" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 3: Mobile App -->
-                        <div
-                            class="bg-black rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                            <div class="h-full p-6 flex flex-col justify-between text-white">
-                                <div>
-                                    <span class="text-sm opacity-80">MOBILE APP</span>
-                                    <h3 class="text-xl font-bold mt-2">Fitness Tracker</h3>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm">2023</span>
-                                    <div
-                                        class="w-6 h-6 border border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors duration-300">
-                                        <ChevronRight class="w-3 h-3" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 4: Video Production -->
-                        <div
-                            class="bg-green-400 rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                            <div class="h-full p-6 flex flex-col justify-between">
-                                <div>
-                                    <span class="text-sm opacity-80">VIDEO</span>
-                                    <h3 class="text-xl font-bold mt-2">Brand Campaign</h3>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm">2024</span>
-                                    <div
-                                        class="w-6 h-6 border border-black rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300">
-                                        <ChevronRight class="w-3 h-3" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 5: Content Creation -->
-                        <div
-                            class="bg-rose-300 rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                            <div class="h-full p-6 flex flex-col justify-between">
-                                <div>
-                                    <span class="text-sm opacity-80">CONTENT</span>
-                                    <h3 class="text-xl font-bold mt-2">Social Media</h3>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm">2023</span>
-                                    <div
-                                        class="w-6 h-6 border border-black rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300">
-                                        <ChevronRight class="w-3 h-3" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div ref="projectsGrid" class="w-full h-4/5">
+                        <ProjectGrid :projects="gridProjects" :max-display="5" :show-featured="true"
+                            @show-more="goToAllProjects" />
                     </div>
                 </div>
 
@@ -123,14 +33,13 @@
                             <p class="text-lg">From concept to execution, I focus on delivering work that makes an
                                 impact and drives results.</p>
 
-                            <!-- Back Button -->
                             <div class="pt-8 mt-12 border-t border-black">
-                                <a href="/"
+                                <router-link to="/"
                                     class="inline-flex items-center text-sm font-medium hover:opacity-70 transition-opacity group">
                                     ← BACK TO HOME
                                     <span
                                         class="ml-2 w-6 h-px bg-black transition-all duration-300 group-hover:w-10"></span>
-                                </a>
+                                </router-link>
                             </div>
                         </div>
                         <div class="space-y-8">
@@ -171,24 +80,22 @@
                                 </div>
                             </div>
 
-                            <!-- Contact CTA -->
                             <div
                                 class="mt-12 p-6 border border-black bg-yellow-300 hover:bg-yellow-200 transition-colors duration-300">
                                 <h3 class="text-xl font-bold mb-2">Want to bring your ideas into digital solution?</h3>
                                 <p class="mb-4">Let's discuss how we can bring your vision to life.</p>
-                                <a href="/connect"
+                                <router-link to="/connect"
                                     class="inline-flex items-center text-sm font-medium bg-black text-white px-4 py-2 hover:bg-gray-800 transition-colors group">
                                     GET IN TOUCH
                                     <span
                                         class="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
-                                </a>
+                                </router-link>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Navigation Controls (Desktop Only) -->
             <div class="absolute bottom-20 right-6 md:right-20 flex items-center space-x-4">
                 <button @click="previousSlide" :disabled="currentSlide === 0"
                     class="nav-button w-12 h-12 border border-black bg-white hover:bg-yellow-200 transition-colors duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
@@ -202,7 +109,6 @@
             </div>
         </div>
 
-        <!-- Mobile: Stacked Layout -->
         <div v-else class="bg-white overflow-y-auto">
             <!-- Hero Section -->
             <section class="min-h-screen flex items-center justify-center px-6 py-12">
@@ -215,107 +121,14 @@
                 </div>
             </section>
 
-            <!-- Projects Section -->
             <section class="min-h-screen px-6 py-12">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl font-bold mb-8 text-center">FEATURED WORK</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Project 1: Large Featured -->
-                        <div
-                            class="sm:col-span-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[200px]">
-                            <div class="h-full p-6 flex flex-col justify-between text-white">
-                                <div>
-                                    <span class="text-sm opacity-80">WEB DESIGN</span>
-                                    <h3 class="text-2xl font-bold mt-2">E-Commerce Platform</h3>
-                                    <p class="mt-4 opacity-90">Modern shopping experience with seamless checkout flow
-                                    </p>
-                                </div>
-                                <div class="flex items-center justify-between mt-4">
-                                    <span class="text-sm">2024</span>
-                                    <div
-                                        class="w-8 h-8 border border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors duration-300">
-                                        <ChevronRight class="w-4 h-4" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 2: Brand Identity -->
-                        <div
-                            class="bg-yellow-300 rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[180px]">
-                            <div class="h-full p-6 flex flex-col justify-between">
-                                <div>
-                                    <span class="text-sm opacity-80">BRANDING</span>
-                                    <h3 class="text-xl font-bold mt-2">Tech Startup</h3>
-                                </div>
-                                <div class="flex items-center justify-between mt-4">
-                                    <span class="text-sm">2024</span>
-                                    <div
-                                        class="w-6 h-6 border border-black rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300">
-                                        <ChevronRight class="w-3 h-3" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 3: Mobile App -->
-                        <div
-                            class="bg-black rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[180px]">
-                            <div class="h-full p-6 flex flex-col justify-between text-white">
-                                <div>
-                                    <span class="text-sm opacity-80">MOBILE APP</span>
-                                    <h3 class="text-xl font-bold mt-2">Fitness Tracker</h3>
-                                </div>
-                                <div class="flex items-center justify-between mt-4">
-                                    <span class="text-sm">2023</span>
-                                    <div
-                                        class="w-6 h-6 border border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors duration-300">
-                                        <ChevronRight class="w-3 h-3" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 4: Video Production -->
-                        <div
-                            class="bg-green-400 rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[180px]">
-                            <div class="h-full p-6 flex flex-col justify-between">
-                                <div>
-                                    <span class="text-sm opacity-80">VIDEO</span>
-                                    <h3 class="text-xl font-bold mt-2">Brand Campaign</h3>
-                                </div>
-                                <div class="flex items-center justify-between mt-4">
-                                    <span class="text-sm">2024</span>
-                                    <div
-                                        class="w-6 h-6 border border-black rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300">
-                                        <ChevronRight class="w-3 h-3" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 5: Content Creation -->
-                        <div
-                            class="sm:col-span-2 bg-rose-300 rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[180px]">
-                            <div class="h-full p-6 flex flex-col justify-between">
-                                <div>
-                                    <span class="text-sm opacity-80">CONTENT</span>
-                                    <h3 class="text-xl font-bold mt-2">Social Media</h3>
-                                </div>
-                                <div class="flex items-center justify-between mt-4">
-                                    <span class="text-sm">2023</span>
-                                    <div
-                                        class="w-6 h-6 border border-black rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300">
-                                        <ChevronRight class="w-3 h-3" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <ProjectGrid :projects="gridProjects" :max-display="5" :show-featured="true"
+                        :show-more-button="true" container-class="" @show-more="goToAllProjects" />
                 </div>
             </section>
 
-            <!-- Approach Section -->
             <section class="min-h-screen px-6 py-12">
                 <div class="max-w-4xl mx-auto">
                     <div class="space-y-12">
@@ -350,26 +163,24 @@
                             </div>
                         </div>
 
-                        <!-- Contact CTA -->
                         <div
                             class="p-6 border border-black bg-yellow-300 hover:bg-yellow-200 transition-colors duration-300 text-center">
                             <h3 class="text-xl font-bold mb-2">Want to bring your ideas into digital solution?</h3>
                             <p class="mb-4">Let's discuss how we can bring your vision to life.</p>
-                            <a href="/connect"
+                            <router-link to="/connect"
                                 class="inline-flex items-center text-sm font-medium bg-black text-white px-4 py-2 hover:bg-gray-800 transition-colors group">
                                 GET IN TOUCH
                                 <span class="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
-                            </a>
+                            </router-link>
                         </div>
 
-                        <!-- Back Button -->
                         <div class="pt-8 border-t border-black text-center">
-                            <a href="/"
+                            <router-link to="/"
                                 class="inline-flex items-center text-sm font-medium hover:opacity-70 transition-opacity group">
                                 ← BACK TO HOME
                                 <span
                                     class="ml-2 w-6 h-px bg-black transition-all duration-300 group-hover:w-10"></span>
-                            </a>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -380,26 +191,32 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { useLenis } from "@/composables/useLenis"
+import { useProjects } from '@/composables/useProjects'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import Layout from '@/Layout/LayoutWithNav.vue'
+import ProjectGrid from '@/components/ProjectGrid.vue'
 
-// Template refs
+const router = useRouter()
+const { gridProjects } = useProjects()
+
 const scrollContainer = ref(null)
 const heroText = ref(null)
 const projectsGrid = ref(null)
 const approachContent = ref(null)
 
-// State
 const currentSlide = ref(0)
 const totalSlides = ref(3)
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
 
-// Computed
 const isDesktop = computed(() => windowWidth.value >= 768)
 
-// Navigation functions (Desktop only)
+const goToAllProjects = () => {
+    router.push('/projects')
+}
+
 const nextSlide = () => {
     if (currentSlide.value < totalSlides.value - 1) {
         const nextSlideIndex = currentSlide.value + 1
@@ -421,7 +238,6 @@ const goToSlide = (index) => {
     currentSlide.value = index
 }
 
-// Simple GSAP animations (Desktop only)
 const animateToSlide = (slideIndex) => {
     gsap.to(scrollContainer.value, {
         x: -slideIndex * window.innerWidth,
@@ -430,7 +246,6 @@ const animateToSlide = (slideIndex) => {
     })
 }
 
-// Keyboard navigation (Desktop only)
 const handleKeydown = (event) => {
     if (event.key === 'ArrowLeft') {
         previousSlide()
@@ -439,7 +254,6 @@ const handleKeydown = (event) => {
     }
 }
 
-// Window resize handler
 const handleResize = () => {
     windowWidth.value = window.innerWidth
 }
