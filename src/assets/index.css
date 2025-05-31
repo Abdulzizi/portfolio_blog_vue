@@ -71,3 +71,14 @@
     font-family: Arial, sans-serif;
   }
 }
+
+/* html, body {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  overflow-y: scroll; 
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none; 
+} */
+

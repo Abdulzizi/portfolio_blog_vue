@@ -2,17 +2,15 @@
     <div class="min-h-screen bg-white" ref="fadeInSection">
         <Marquee />
 
-        <!-- Grid Layout with Dynamic Scaling -->
         <div ref="gridRef" @mouseleave="clearHover"
             class="grid  gap-px bg-black transition-all duration-500 ease-in-out cursor-pointer"
             :class="gridResponsiveClass" :style="gridStyle">
-            <!-- First Row -->
             <GridBox label="WORK" @hover="hover('work')" :active="hovered === 'work'"
-                :class="{ 'row-span-2': isDesktop }" />
+                :class="{ 'row-span-2': isDesktop }" @click="$router.push('/work')" />
             <GridBox label="CONNECT" @hover="hover('connect')" :active="hovered === 'connect'"
-                :class="{ 'col-span-2': isDesktop }" />
+                :class="{ 'col-span-2': isDesktop }" @click="$router.push('/connect')" />
 
-            <!-- Center Logo -->
+            <!--  Logo -->
             <div class="bg-yellow-300 flex items-center justify-center border border-black transition-all duration-500"
                 :class="{ 'order-first': !isDesktop }" @mouseenter="hover('logo')" @mouseleave="hover(null)">
                 <div class=" p-4 relative transition-transform duration-300"
@@ -25,11 +23,10 @@
                 </div>
             </div>
 
-            <!-- Second Row -->
             <GridBox label="ABOUT" @hover="hover('about')" :active="hovered === 'about'"
                 :class="{ 'row-span-2': isDesktop }" @click="$router.push('/about')" />
-            <GridBox label="COMMUNITY" @hover="hover('community')" :active="hovered === 'community'"
-                :class="{ 'col-span-2': isDesktop }" />
+            <GridBox label="BLOG" @hover="hover('blog')" :active="hovered === 'blog'"
+                :class="{ 'col-span-2': isDesktop }" @click="$router.push('/blog')" />
         </div>
 
         <!-- Footer -->
@@ -50,7 +47,6 @@ const hovered = ref(null)
 const gridRef = ref(null)
 const windowWidth = ref(window.innerWidth)
 
-// Track window width for responsive behavior
 const updateWindowWidth = () => {
     windowWidth.value = window.innerWidth
 }
@@ -61,7 +57,6 @@ const isDesktop = computed(() => {
 })
 
 const hover = (key) => {
-    // Only enable hover effects on desktop
     if (isDesktop.value) {
         hovered.value = key
     }
@@ -100,36 +95,34 @@ const gridStyle = computed(() => {
         }
     }
 
-    // Desktop layout with hover effects
     let colTemplate = '1fr 2fr 1fr'
     let rowTemplate = '1fr 2fr 1fr'
 
-    // Adjust based on which section is hovered
     if (hovered.value === 'work') {
-        colTemplate = '2fr 1.5fr 0.5fr' // Left column grows
-        rowTemplate = '1.5fr 2fr 0.5fr' // Top rows grow
+        colTemplate = '2fr 1.5fr 0.5fr'
+        rowTemplate = '1.5fr 2fr 0.5fr'
     }
     else if (hovered.value === 'connect') {
-        colTemplate = '0.5fr 3fr 0.5fr' // Middle column grows
-        rowTemplate = '2fr 1.5fr 0.5fr' // Top row grows
+        colTemplate = '0.5fr 3fr 0.5fr'
+        rowTemplate = '2fr 1.5fr 0.5fr'
     }
     else if (hovered.value === 'logo') {
-        colTemplate = '0.8fr 2.4fr 0.8fr' // Middle column slightly grows
-        rowTemplate = '0.8fr 2.4fr 0.8fr' // Middle row slightly grows
+        colTemplate = '0.8fr 2.4fr 0.8fr'
+        rowTemplate = '0.8fr 2.4fr 0.8fr'
     }
     else if (hovered.value === 'about') {
-        colTemplate = '0.5fr 1.5fr 2fr' // Right column grows
-        rowTemplate = '0.5fr 2fr 1.5fr' // Top rows grow
+        colTemplate = '0.5fr 1.5fr 2fr'
+        rowTemplate = '0.5fr 2fr 1.5fr'
     }
-    else if (hovered.value === 'community') {
-        colTemplate = '0.5fr 3fr 0.5fr' // Middle column grows
-        rowTemplate = '0.5fr 1.5fr 2fr' // Bottom row grows
+    else if (hovered.value === 'blog') {
+        colTemplate = '0.5fr 3fr 0.5fr'
+        rowTemplate = '0.5fr 1.5fr 2fr'
     }
 
     return {
         gridTemplateColumns: colTemplate,
         gridTemplateRows: rowTemplate,
-        height: 'calc(100vh - 80px)' // Adjust based on header/footer height
+        height: 'calc(100vh - 80px)'
     }
 });
 

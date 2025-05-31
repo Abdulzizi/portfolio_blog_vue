@@ -74,13 +74,13 @@ const animatePage = () => {
         slideInSection.value,
         {
             opacity: 0,
-            y: 100, // Start from below
+            y: 100,
         },
         {
             opacity: 1,
-            y: 0, // Slide up to its natural position
-            duration: 2, // Duration of the animation
-            ease: "power4.out", // Ease for smooth transition
+            y: 0,
+            duration: 2,
+            ease: "power4.out",
         }
     );
 };

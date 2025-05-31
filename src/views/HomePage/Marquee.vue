@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white border-b border-black overflow-hidden whitespace-nowrap hidden md:block">
+    <div class="bg-white border-b border-black overflow-hidden whitespace-nowrap block">
         <div class="animate-marquee inline-block">
             <span class="inline-block py-2 px-4">CALL ME ABDULZIZI — I'M A PROGRAMMER, CONTENT CREATOR THAT LOVES
                 LEARNING.</span>
