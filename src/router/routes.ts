@@ -14,6 +14,13 @@ export default [
   },
 
   {
+    path: "/dashboard",
+    name: "dashboard",
+    meta: { title: "Dashboard Page", authRequired: true },
+    component: () => import("../views/Admin/Dashboard/index.vue"),
+  },
+
+  {
     path: "/about",
     name: "about",
     meta: { title: "About Page", authRequired: false },
