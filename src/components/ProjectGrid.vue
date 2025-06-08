@@ -1,11 +1,11 @@
 <template>
     <div class="w-full">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full mb-8" :class="containerClass">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full mb-8 md:mb-4" :class="containerClass">
             <ProjectCard v-for="(project, index) in displayProjects" :key="project.id" :project="project"
                 :featured="index === 0 && showFeatured" :size="getCardSize(index)" />
         </div>
 
-        <div v-if="hasMoreProjects && showMoreButton" class="text-center">
+        <div v-if="hasMoreProjects && showMoreButton" class="text-center pb-14">
             <router-link to="/all-projects"
                 class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
                 <span class="mr-2">+</span>

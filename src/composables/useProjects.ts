@@ -1,201 +1,172 @@
 import { ref, computed } from "vue";
 
-//! hardcoded data (replace with api soon)
 const projects = ref([
   {
-    id: 1,
-    title: "E-Commerce Platform",
-    category: "WEB DESIGN",
-    description: "Modern shopping experience with seamless checkout flow",
-    year: "2024",
-    featured: true,
-    color: "bg-gradient-to-br from-blue-500 to-purple-600",
-    textColor: "text-white",
-    borderColor: "border-white",
-    slug: "ecommerce-platform",
-    image: null,
-    tags: ["React", "Node.js", "Stripe"],
-    client: "Tech Startup",
-    status: "published",
+    id: "04d80dcd-219f-4808-b11f-cd752e997711",
+    title: "Project Four",
+    description: "This is a detailed description of Project Four.",
+    link: "https://github.com/project-four",
+    slug: "project-four",
+    thumbnail: null,
+    images: [],
+    tech_stack: '["Ruby on Rails","MySQL"]',
+    is_published: 1,
+    start_date: "2020-01-01",
+    // end_date: "2021-01-01",
   },
   {
-    id: 2,
-    title: "Tech Startup",
-    category: "BRANDING",
-    description: "Complete brand identity system",
-    year: "2024",
-    featured: false,
-    color: "bg-yellow-300",
-    textColor: "text-black",
-    borderColor: "border-black",
-    slug: "tech-startup-branding",
-    image: null,
-    tags: ["Logo Design", "Brand Guidelines"],
-    client: "StartupCo",
-    status: "published",
+    id: "23e8183d-0778-4b68-b46d-cf019a7f6537",
+    title: "Project Five",
+    description: "This is the description for Project Five.",
+    link: "https://github.com/project-five",
+    slug: "project-five",
+    thumbnail: null,
+    images: [],
+    tech_stack: '["PHP","Laravel","MySQL"]',
+    is_published: 1,
+    start_date: "2020-01-01",
+    end_date: "2021-01-01",
   },
   {
-    id: 3,
-    title: "Fitness Tracker",
-    category: "MOBILE APP",
-    description: "iOS and Android fitness tracking application",
-    year: "2023",
-    featured: true,
-    color: "bg-black",
-    textColor: "text-white",
-    borderColor: "border-white",
-    slug: "fitness-tracker-app",
-    image: null,
-    tags: ["React Native", "Health Kit"],
-    client: "FitnessCorp",
-    status: "published",
+    id: "b1a2c3d4-5678-9012-3456-7890abcdef01",
+    title: "Project Six",
+    description: "This is the description for Project Six.",
+    link: "https://github.com/project-six",
+    slug: "project-six",
+    thumbnail: null,
+    images: [],
+    tech_stack: '["JavaScript","React","Node.js"]',
+    is_published: 1,
+    start_date: "2020-01-01",
+    end_date: "2021-01-01",
   },
   {
-    id: 4,
-    title: "Brand Campaign",
-    category: "VIDEO",
-    description: "Creative video campaign for product launch",
-    year: "2024",
-    featured: false,
-    color: "bg-green-400",
-    textColor: "text-black",
-    borderColor: "border-black",
-    slug: "brand-campaign-video",
-    image: null,
-    tags: ["Video Production", "Motion Graphics"],
-    client: "BrandCorp",
-    status: "published",
+    id: "b1a2c3d4-5678-9012-3456-7890abcdef02",
+    title: "Project Seven",
+    description: "This is the description for Project Seven.",
+    link: "https://github.com/project-seven",
+    slug: "project-seven",
+    thumbnail: null,
+    images: [],
+    tech_stack: '["JavaScript","React","Redux"]',
+    start_date: "2021-01-01",
+    end_date: "2023-01-01",
+    is_published: 1,
   },
   {
-    id: 5,
-    title: "Social Media",
-    category: "CONTENT",
-    description: "Social media content strategy and design",
-    year: "2023",
-    featured: false,
-    color: "bg-rose-300",
-    textColor: "text-black",
-    borderColor: "border-black",
-    slug: "social-media-content",
-    image: null,
-    tags: ["Content Strategy", "Graphic Design"],
-    client: "SocialCorp",
-    status: "published",
+    id: "b1a2c3d4-5678-9012-3456-7890abcdef03",
+    title: "Project Eight",
+    description: "This is the description for Project Eight.",
+    link: "https://github.com/project-eight",
+    slug: "project-eight",
+    thumbnail: null,
+    images: [],
+    tech_stack: '["JavaScript","Vue.js","Node.js"]',
+    is_published: 1,
+    start_date: "2021-01-01",
+    end_date: "2023-01-01",
   },
   {
-    id: 6,
-    title: "Portfolio Website",
-    category: "WEB DESIGN",
-    description: "Personal portfolio with custom animations",
-    year: "2024",
-    featured: false,
-    color: "bg-purple-500",
-    textColor: "text-white",
-    borderColor: "border-white",
-    slug: "portfolio-website",
-    image: null,
-    tags: ["Vue.js", "GSAP", "Tailwind"],
-    client: "Personal",
-    status: "published",
+    id: "b1a2c3d4-5678-9012-3456-7890abcdef04",
+    title: "Project Nine",
+    description: "This is the description for Project Nine.",
+    link: "https://github.com/project-nine",
+    slug: "project-nine",
+    thumbnail: null,
+    images: [],
+    tech_stack: '["JavaScript","React","TypeScript"]',
+    is_published: 1,
+    start_date: "2021-01-01",
+    end_date: "2023-01-01",
   },
   {
-    id: 7,
-    title: "Product Design",
-    category: "PRODUCT DESIGN",
-    description: "Product design for a new mobile app",
-    year: "2024",
-    featured: false,
-    color: "bg-indigo-500",
-    textColor: "text-white",
-    borderColor: "border-white",
-    slug: "product-design",
-    image: null,
-    tags: ["Figma", "Design Systems"],
-    client: "ProductCorp",
-    status: "published",
-  },
-  {
-    id: 8,
-    title: "Web Application",
-    category: "WEB DEVELOPMENT",
-    description: "Web application for a startup",
-    year: "2024",
-    featured: false,
-    color: "bg-cyan-500",
-    textColor: "text-black",
-    borderColor: "border-black",
-    slug: "web-application",
-    image: null,
-    tags: ["React", "Node.js", "MongoDB"],
-    client: "StartupCo",
-    status: "published",
+    id: "b1a2c3d4-5678-9012-3456-7890abcdef05",
+    title: "Project Ten",
+    description: "This is the description for Project Ten.",
+    link: "https://github.com/project-ten",
+    slug: "project-ten",
+    thumbnail: null,
+    images: [],
+    tech_stack: '["JavaScript","React","React Router"]',
+    is_published: 1,
+    start_date: "2021-01-01",
+    end_date: "2023-01-01",
   },
 ]);
 
+function formatPeriod(start, end) {
+  if (!start) return "—";
+
+  const format = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleString("default", { month: "long", year: "numeric" });
+  };
+
+  if (!end || start === end) return format(start);
+
+  return `${format(start)} – ${format(end)}`;
+}
+
+function safeParse(json) {
+  if (!json) return [];
+  try {
+    return JSON.parse(json);
+  } catch {
+    return [];
+  }
+}
+
+const withComputedProps = computed(() =>
+  projects.value.map((p) => ({
+    ...p,
+    status: p.is_published === 1 ? "published" : "draft",
+    techStack: safeParse(p.tech_stack),
+    featured: p.images.length > 0 || p.id === projects.value[0]?.id,
+    periodLabel: formatPeriod(p.start_date, p.end_date),
+  }))
+);
 export function useProjects() {
-  // Get all published projects
+  /* published only */
   const publishedProjects = computed(() =>
-    projects.value.filter((project) => project.status === "published")
+    withComputedProps.value.filter((p) => p.status === "published")
   );
 
-  // Get featured projects (for main display)
   const featuredProjects = computed(() =>
-    publishedProjects.value.filter((project) => project.featured)
+    publishedProjects.value.filter((p) => p.featured)
   );
 
-  // Get projects for grid display (limit to specific number)
   const gridProjects = computed(() => {
     const featured = featuredProjects.value;
-    const regular = publishedProjects.value.filter(
-      (project) => !project.featured
-    );
-
-    // Always show featured first, then fill with regular projects up to 6 total
-    const combined = [...featured, ...regular];
-    return combined.slice(0, 6);
+    const regular = publishedProjects.value.filter((p) => !p.featured);
+    return [...featured, ...regular].slice(0, 6);
   });
 
-  // Get projects by category
-  const getProjectsByCategory = (category) => {
-    return publishedProjects.value.filter(
-      (project) => project.category.toLowerCase() === category.toLowerCase()
+  const getProjectsByCategory = (category) =>
+    publishedProjects.value.filter(
+      (p) => (p.category ?? "").toLowerCase() === category.toLowerCase()
     );
+
+  const getProjectBySlug = (slug) =>
+    publishedProjects.value.find((p) => p.slug === slug);
+
+  /* You can still keep these admin helpers if you wish */
+  const addProject = (data) => {
+    projects.value.push({
+      ...data,
+      id: crypto.randomUUID?.() ?? Date.now(),
+      is_published: 1,
+      tech_stack: JSON.stringify(data.techStack ?? []),
+    });
   };
 
-  // Get project by slug
-  const getProjectBySlug = (slug) => {
-    return publishedProjects.value.find((project) => project.slug === slug);
-  };
-
-  // Add new project (for admin)
-  const addProject = (projectData) => {
-    const newProject = {
-      id: Date.now(),
-      ...projectData,
-      status: "published",
-    };
-    projects.value.push(newProject);
-    return newProject;
-  };
-
-  // Update project (for admin)
   const updateProject = (id, updates) => {
-    const index = projects.value.findIndex((project) => project.id === id);
-    if (index !== -1) {
-      projects.value[index] = { ...projects.value[index], ...updates };
-      return projects.value[index];
-    }
-    return null;
+    const idx = projects.value.findIndex((p) => p.id === id);
+    if (idx !== -1)
+      projects.value[idx] = { ...projects.value[idx], ...updates };
   };
 
-  // Delete project (for admin)
   const deleteProject = (id) => {
-    const index = projects.value.findIndex((project) => project.id === id);
-    if (index !== -1) {
-      projects.value.splice(index, 1);
-      return true;
-    }
-    return false;
+    projects.value = projects.value.filter((p) => p.id !== id);
   };
 
   return {

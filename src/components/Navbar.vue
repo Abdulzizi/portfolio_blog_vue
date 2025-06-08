@@ -1,5 +1,5 @@
 <template>
-    <nav class="w-full bg-white border-b border-2 border-black sticky bottom-0 z-50">
+    <nav class="w-full bg-white border-b border-2 border-black fixed bottom-0 z-50">
         <!-- Desktop Navbar -->
         <div class="hidden md:flex items-center h-16">
             <!-- Left Navigation Items -->
