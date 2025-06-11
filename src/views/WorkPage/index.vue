@@ -16,11 +16,16 @@
                 <!-- Slide 2: Featured Projects Grid -->
                 <div class="w-screen h-full flex-shrink-0 flex items-center px-6 md:px-20">
                     <div ref="projectsGrid" class="w-full h-4/5">
-                        <ProjectGrid :projects="gridProjects" :max-display="5" :show-featured="true"
+                        <ProjectGrid :projects="enrichedProjects" :max-display="5" :show-featured="true"
                             @show-more="goToAllProjects" />
+                        <div class="flex items-center justify-center">
+                            <router-link to="/all-projects"
+                                class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
+                                View All Projects
+                            </router-link>
+                        </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="absolute bottom-20 right-6 md:right-20 flex items-center space-x-4">
@@ -51,8 +56,15 @@
             <section class="min-h-screen px-6 py-12">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl font-bold mb-8 text-center">FEATURED WORK</h2>
-                    <ProjectGrid :projects="gridProjects" :max-display="5" :show-featured="true"
-                        :show-more-button="true" container-class="" @show-more="goToAllProjects" />
+                    <ProjectGrid :projects="enrichedProjects" :max-display="5" :show-featured="true"
+                        @show-more="goToAllProjects" />
+
+                    <div class="flex items-center justify-center mb-10 md:mb-0">
+                        <router-link to="/all-projects"
+                            class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
+                            View All Projects
+                        </router-link>
+                    </div>
                 </div>
             </section>
 
@@ -62,6 +74,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+
 import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { useLenis } from "@/composables/useLenis"
@@ -69,6 +82,14 @@ import { useProjects } from '@/composables/useProjects'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import Layout from '@/Layout/LayoutWithNav.vue'
 import ProjectGrid from '@/components/ProjectGrid.vue'
+
+import { safeParse, formatPeriod } from '@/helpers/formatters'
+
+import { useProjectStore } from "@/state/pinia";
+
+const projectStore = useProjectStore();
+
+const projects = ref([]);
 
 const router = useRouter()
 const { gridProjects } = useProjects()
@@ -83,6 +104,19 @@ const totalSlides = ref(2)
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
 
 const isDesktop = computed(() => windowWidth.value >= 768)
+
+const enrichedProjects = computed(() => {
+    if (!projectStore.projects.length) return []
+
+    const firstId = projectStore.projects[0].id
+
+    return projectStore.projects.map((p) => ({
+        ...p,
+        techStack: safeParse(p.tech_stack),
+        periodLabel: formatPeriod(p.start_date, p.end_date),
+        featured: (p.images?.length ?? 0) > 0 || p.id === firstId,
+    }))
+})
 
 const goToAllProjects = () => {
     router.push('/projects')
@@ -129,7 +163,23 @@ const handleResize = () => {
     windowWidth.value = window.innerWidth
 }
 
+const fetchAllProjects = async () => {
+    try {
+        await projectStore.fetchAll();
+
+        if (projectStore.projects.length > 0) {
+            projects.value = projectStore.projects
+        } else {
+            console.error('[WORKPAGE, index.vue] No projects found');
+        }
+    } catch (error) {
+        console.error('[WORKPAGE, index.vue] Error fetching projects:', error);
+    }
+}
+
 onMounted(() => {
+    fetchAllProjects();
+
     if (heroText.value) {
         gsap.from(heroText.value, {
             y: 30,

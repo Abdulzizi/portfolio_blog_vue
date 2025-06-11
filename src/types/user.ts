@@ -7,7 +7,6 @@ export interface User {
   created_at?: string;
   updated_at?: string;
 
-  // Any additional fields from your API
   [key: string]: any;
 }
 
@@ -30,25 +29,4 @@ export interface UserListResponse {
   data: UserListData;
   message: string;
   settings?: unknown[];
-}
-
-// Create/Update user interfaces
-export interface CreateUserData {
-  username: string;
-  email: string;
-  password: string;
-  role?: string;
-  firstName?: string;
-  lastName?: string;
-}
-
-export interface UpdateUserData {
-  username?: string;
-  email?: string;
-  password?: string;
-  role?: string;
-  status?: string;
-  firstName?: string;
-  lastName?: string;
-  avatar?: string;
 }
