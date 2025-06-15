@@ -10,11 +10,11 @@
             <div class="mb-12 md:mb-16 border border-black overflow-hidden">
                 <div class="aspect-[16/9] md:aspect-[21/9] bg-gray-100 relative">
                     <!-- Replace with your actual photo -->
-                    <div class="absolute inset-0 bg-yellow-300 flex items-center justify-center">
+                    <!-- <div class="absolute inset-0 bg-yellow-300 flex items-center justify-center">
                         <span class="text-2xl font-bold opacity-30">YOUR PHOTO</span>
-                    </div>
-                    <!-- Uncomment and use this when you have an actual image -->
-                    <!-- <img src="/path-to-your-photo.jpg" alt="Abdulzizi" class="w-full h-full object-cover"> -->
+                    </div> -->
+                    <img src="@/assets/images/my-photo.svg" alt="Abdulzizi"
+                        class="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition duration-300">
                 </div>
             </div>
 
