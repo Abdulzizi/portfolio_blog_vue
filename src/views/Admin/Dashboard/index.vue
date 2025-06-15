@@ -242,8 +242,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/state/pinia'
+// import { useRouter } from 'vue-router'
+// import { useAuthStore } from '@/state/pinia'
 import {
     Folder,
     CheckCircle,
@@ -254,14 +254,15 @@ import {
     Settings,
     ExternalLink
 } from 'lucide-vue-next'
+
 import AdminLayout from '@/Layout/AdminLayout.vue'
 
-const router = useRouter()
-const authStore = useAuthStore()
+// const router = useRouter()
+// const authStore = useAuthStore()
 
 // Handle logout
-const handleLogout = async () => {
-    await authStore.logout()
-    router.push('/login')
-}
+// const handleLogout = async () => {
+//     await authStore.logout()
+//     router.push('/login')
+// }
 </script>

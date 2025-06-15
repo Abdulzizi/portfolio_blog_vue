@@ -118,6 +118,9 @@ const project = computed(() => {
         ...raw,
         techStack: safeParse(raw.tech_stack),
         periodLabel: formatPeriod(raw.start_date, raw.end_date),
+        color: raw.color,
+        textColor: raw.textColor,
+        image: raw.thumbnail ?? raw.images?.[0] ?? null
     }
 })
 

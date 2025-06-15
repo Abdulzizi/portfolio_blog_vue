@@ -78,7 +78,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/state/pinia'
-import { ExternalLink, ChevronDown, Menu } from 'lucide-vue-next'
+import { ChevronDown, Menu } from 'lucide-vue-next'
 
 const router = useRouter()
 const authStore = useAuthStore()

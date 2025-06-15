@@ -14,10 +14,12 @@ const app = createApp(App);
 
 app.use(pinia);
 
-const authStore = useAuthStore();
-await authStore.initAuth();
+(async () => {
+  const authStore = useAuthStore();
+  await authStore.initAuth();
 
-axiosInterceptors();
+  axiosInterceptors();
 
-app.use(router);
-app.mount("#app");
+  app.use(router);
+  app.mount("#app");
+})();

@@ -89,7 +89,6 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { useLenis } from "@/composables/useLenis"
-import { useProjects } from '@/composables/useProjects'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import Layout from '@/Layout/LayoutWithNav.vue'
 import ProjectGrid from '@/components/ProjectGrid.vue'

@@ -7,7 +7,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const authRequired = to.matched.some((route) => route.meta.authRequired);
   const loggeduser = localStorage.getItem("token");
   if (authRequired && !loggeduser) {
@@ -22,4 +22,3 @@ router.beforeResolve((to) => {
 });
 
 export default router;
-
