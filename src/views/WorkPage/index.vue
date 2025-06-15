@@ -102,7 +102,6 @@ const projectStore = useProjectStore();
 const projects = ref([]);
 
 const router = useRouter()
-const { gridProjects } = useProjects()
 
 const scrollContainer = ref(null)
 const heroText = ref(null)
