@@ -77,6 +77,19 @@
                     </div>
                 </section>
             </div>
+            <div v-else class="flex items-center justify-center h-screen text-center px-4">
+                <div>
+                    <h2 class="text-2xl md:text-4xl font-bold mb-4">There is no projects for now</h2>
+                    <p class="text-gray-600 mb-6">
+                        Oops! The project you seek is as elusive as a cat in a magician's hat. Maybe it vanished in a
+                        puff of digital smoke, or it never existed in the first place!
+                    </p>
+                    <router-link to="/work"
+                        class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
+                        ← Back to Projects
+                    </router-link>
+                </div>
+            </div>
         </div>
     </Layout>
 </template>
@@ -127,7 +140,7 @@ const fetchProjectBySlug = async () => {
     try {
         loading.value = true
 
-        await new Promise(resolve => setTimeout(resolve, 200))
+        // await new Promise(resolve => setTimeout(resolve, 200))
         await projectStore.fetchBySlug(route.params.slug as string)
     } catch (error) {
         console.error('[ProjectDetail.vue] Error fetching project:', error)

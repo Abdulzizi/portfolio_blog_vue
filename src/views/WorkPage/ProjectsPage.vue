@@ -1,6 +1,10 @@
 <template>
     <Layout>
         <div class="min-h-screen bg-white py-12 pb-28" ref="slideInSection">
+            <div v-if="loading" class="flex items-center justify-center h-screen">
+                <!-- Spinner -->
+                <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-green-500 border-solid"></div>
+            </div>
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4">ALL PROJECTS</h1>
@@ -9,8 +13,17 @@
                     </p>
                 </div>
 
-                <ProjectGrid :projects="projects" :max-display="50" :show-featured="false" :show-more-button="false"
-                    container-class="min-h-[400px]" />
+                <div v-if="projects.length > 0">
+                    <ProjectGrid :projects="projects" :max-display="50" :show-featured="false" :show-more-button="false"
+                        container-class="min-h-[400px]" />
+                </div>
+
+                <div v-else class="flex flex-col items-center justify-center min-h-[300px] text-center">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4">Oops... Nothing here yet! 😅</h2>
+                    <p class="text-gray-600 mb-6">
+                        Looks like the project elves are still coding... or maybe they're just on a coffee break ☕👀
+                    </p>
+                </div>
 
                 <div class="text-center mt-12 pt-8 border-t border-black">
                     <router-link to="/work"
@@ -29,13 +42,31 @@ import { ref, computed, onMounted } from 'vue'
 import { useLenis } from "@/composables/useLenis"
 import gsap from "gsap"
 
-import { useProjects } from '@/composables/useProjects'
+import { useProjectStore } from "@/state/pinia"
 import Layout from '@/Layout/LayoutWithNav.vue'
 import ProjectGrid from '@/components/ProjectGrid.vue'
 
-const { projects } = useProjects()
-
+const projectStore = useProjectStore()
+const loading = ref(true)
+const projects = ref([])
 const slideInSection = ref(null)
+
+const fetchAllProjects = async () => {
+    try {
+        loading.value = true
+        await projectStore.fetchAll();
+
+        if (projectStore.projects.length > 0) {
+            projects.value = projectStore.projects
+        } else {
+            console.error('[WORKPAGE, projectPage.vue] No projects found');
+        }
+    } catch (error) {
+        console.error('[WORKPAGE, projectPage.vue] Error fetching projects:', error);
+    } finally {
+        loading.value = false
+    }
+}
 
 const animatePage = () => {
     gsap.fromTo(
@@ -55,6 +86,7 @@ const animatePage = () => {
 
 onMounted(() => {
     animatePage();
+    fetchAllProjects();
 })
 
 useLenis();
