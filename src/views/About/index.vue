@@ -13,7 +13,7 @@
                     <!-- <div class="absolute inset-0 bg-yellow-300 flex items-center justify-center">
                         <span class="text-2xl font-bold opacity-30">YOUR PHOTO</span>
                     </div> -->
-                    <img src="@/assets/images/my-photo.svg" alt="Abdulzizi"
+                    <img src="/images/my-photo.svg" alt="Abdulzizi"
                         class="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition duration-300">
                 </div>
             </div>
