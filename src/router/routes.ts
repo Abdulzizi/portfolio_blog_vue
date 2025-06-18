@@ -25,6 +25,12 @@ export default [
     meta: { title: "Admin Users Page", authRequired: true },
     component: () => import("../views/Admin/User/index.vue"),
   },
+  {
+    path: "/admin/users/:id",
+    name: "admin-users-edit",
+    meta: { title: "Admin Users Edit Page", authRequired: true },
+    component: () => import("../views/Admin/User/form.vue"),
+  },
 
   {
     path: "/about",

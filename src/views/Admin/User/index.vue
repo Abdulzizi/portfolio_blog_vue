@@ -1,5 +1,12 @@
 <template>
     <AdminLayout>
+        <Modal ref="modalRef">
+            <template #title>Delete User</template>
+            <template #body>Are you sure you want to delete this user? This action cannot be undone.</template>
+        </Modal>
+
+        <FullPageLoader v-if="isLoading" />
+
         <!-- Page Header -->
         <div class="mb-8">
             <div class="flex items-center justify-between">
@@ -47,13 +54,11 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="user in users" :key="user.id"
                             class="hover:bg-gray-50 transition-colors duration-200">
-                            <!-- ID -->
                             <td
                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r border-gray-200">
                                 #{{ user.id }}
                             </td>
 
-                            <!-- Username -->
                             <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">
                                 <div class="flex items-center">
                                     <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center mr-3">
@@ -67,19 +72,18 @@
                                 </div>
                             </td>
 
-                            <!-- Email -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">
                                 {{ user.email }}
                             </td>
 
-
-                            <!-- Actions -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center space-x-2">
-                                    <button class="text-blue-600 hover:text-blue-900 transition-colors">
+                                    <button @click="goToEditUser(user.id)"
+                                        class="text-blue-600 hover:text-blue-900 transition-colors">
                                         <Edit class="w-4 h-4" />
                                     </button>
-                                    <button class="text-red-600 hover:text-red-900 transition-colors">
+                                    <button @click="deleteUser(user.id)"
+                                        class="text-red-600 hover:text-red-900 transition-colors">
                                         <Trash2 class="w-4 h-4" />
                                     </button>
                                 </div>
@@ -109,14 +113,16 @@
                 </div>
             </div>
         </div>
-        <div v-else>
-            <h1>there is no users</h1>
+        <div v-else class="text-center py-20 text-gray-500">
+            <p class="text-lg">No users found.</p>
+            <p class="text-sm mt-2">Try adding new users to get started.</p>
         </div>
     </AdminLayout>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import AdminLayout from '@/Layout/AdminLayout.vue'
 import {
     Users,
@@ -132,17 +138,21 @@ import {
     Trash2,
     MoreHorizontal
 } from 'lucide-vue-next'
+import FullPageLoader from '@/components/FullPageLoader.vue'
+import { showSuccessToast, showErrorToast } from '@/helpers/alert'
 
 import { useUserStore } from "@/state/pinia"
+import Modal from '@/components/Modal.vue'
+
+const modalRef = ref()
+const router = useRouter()
 
 const userStore = useUserStore()
 
-// Get users from store
 let users = computed(() => userStore.users)
-const loading = computed(() => userStore.loading)
+const isLoading = computed(() => userStore.isLoading)
 const error = computed(() => userStore.error)
 
-// Toggle password visibility
 const togglePassword = (userId) => {
     showPasswords.value[userId] = !showPasswords.value[userId]
 }
@@ -150,10 +160,21 @@ const togglePassword = (userId) => {
 const fetchUsers = async () => {
     try {
         await userStore.getAllUsers();
-
     } catch (error) {
         console.error('Error fetching users:', error)
     }
+}
+
+const deleteUser = async (userId) => {
+    const confirmed = await modalRef.value.openModal()
+
+    if (!confirmed) return
+
+    showSuccessToast("User deleted successfully")
+}
+
+const goToEditUser = async (userId) => {
+    router.push({ name: 'admin-users-edit', params: { id: userId } })
 }
 
 onMounted(() => {

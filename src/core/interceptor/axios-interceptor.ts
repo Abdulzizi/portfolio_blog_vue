@@ -44,17 +44,10 @@ export function axiosInterceptors() {
 
       if (error.code === "ECONNABORTED") {
         showErrorToast("Request Time Out", "Jaringan lambat, coba lagi.");
-      } else if (error.response && [403, 401].includes(error.response.status)) {
-        console.error("Auth error:", error.response.data);
-        const confirmed = await showConfirmationDialog(
-          "Ooops",
-          error.response.data.errors?.[0] ||
-            "Session expired. Please login again."
-        );
-        if (confirmed) {
-          await auth.logout();
-          window.location.href = "/login"; // Use href instead of reload
-        }
+      }
+      if (error.response && [403, 401].includes(error.response.status)) {
+        await auth.logout();
+        window.location.href = "/login";
       } else {
         console.log(`Error : `, error);
       }

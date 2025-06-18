@@ -21,60 +21,6 @@ export const showErrorToast = (title: string, text = "") => {
   });
 };
 
-// Function to show a delete confirmation dialog using custom modal component
-export const showDeleteConfirmationDialog = async (
-  title = "Apakah yakin menghapus data ini?",
-  text = "Data yang dihapus tidak bisa dikembalikan!",
-  confirmButtonText = "Hapus",
-  cancelButtonText = "Batal"
-) => {
-  return new Promise((resolve) => {
-    const modalApp = createApp({
-      setup() {
-        const isModalOpen = ref(true);
-
-        const confirm = () => {
-          isModalOpen.value = false;
-          resolve(true);
-          modalApp.unmount();
-        };
-
-        const cancel = () => {
-          isModalOpen.value = false;
-          resolve(false);
-          modalApp.unmount();
-        };
-
-        return {
-          isModalOpen,
-          confirm,
-          cancel,
-          title,
-          text,
-          confirmButtonText,
-          cancelButtonText,
-        };
-      },
-      template: `
-        <div v-if="isModalOpen" class="fixed inset-0 bg-slate-950/50 flex justify-center items-center z-[9999]">
-          <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 w-4/12 p-6 text-center">
-            <h2 class="text-xl font-semibold text-red-600">{{ title }}</h2>
-            <p class=" text-base text-gray-700 mt-2">{{ text }}</p>
-            <div class="mt-4 flex justify-center gap-4">
-              <button class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-800 transition-all duration-300 ease-in border rounded-md shadow-sm outline-none bg-transparent border-transparent hover:bg-gray-200/50 hover:border-gray-400/30 disabled:opacity-50 disabled:pointer-events-none" @click="cancel">{{ cancelButtonText }}</button>
-              <button class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-red-600 transition-all duration-300 ease-in border rounded-md shadow-sm outline-none bg-transparent border-transparent hover:bg-red-100 hover:border-red-400/50 disabled:opacity-50 disabled:pointer-events-none" @click="confirm">{{ confirmButtonText }}</button>
-            </div>
-          </div>
-        </div>
-      `,
-    });
-
-    const modalContainer = document.createElement("div");
-    document.body.appendChild(modalContainer);
-    modalApp.mount(modalContainer);
-  });
-};
-
 // Function to show a confirmation dialog using custom modal component
 export const showConfirmationDialog = async (title: string, text: string) => {
   return new Promise((resolve) => {

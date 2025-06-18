@@ -11,6 +11,7 @@ import type {
 interface AuthState {
   apiUrl: string;
   userLogin: User | Record<string, never>;
+  isLoading: boolean;
   bearerToken: string;
   response: ApiResponse;
 }
@@ -20,6 +21,7 @@ export const useAuthStore = defineStore("auth", {
     apiUrl: import.meta.env.VITE_APP_APIURL as string,
     userLogin: {} as User | Record<string, never>,
     bearerToken: "",
+    isLoading: false,
     response: {
       status: null,
       message: null,
@@ -62,6 +64,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async logout(): Promise<void> {
+      this.isLoading = true;
       try {
         const token = this.getToken();
         if (token) {
@@ -92,6 +95,7 @@ export const useAuthStore = defineStore("auth", {
         this.userLogin = {};
         await this.removeToken();
         await this.removeUser();
+        this.isLoading = false;
       }
     },
 
