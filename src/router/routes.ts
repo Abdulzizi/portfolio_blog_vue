@@ -31,6 +31,18 @@ export default [
     meta: { title: "Admin Users Form Page", authRequired: true },
     component: () => import("../views/Admin/User/form.vue"),
   },
+  {
+    path: "/admin/tags-list",
+    name: "admin-tags",
+    meta: { title: "Admin Tags Page", authRequired: true },
+    component: () => import("../views/Admin/Tags/index.vue"),
+  },
+  {
+    path: "/admin/tags/:id?",
+    name: "admin-tags-form",
+    meta: { title: "Admin Tags Form Page", authRequired: true },
+    component: () => import("../views/Admin/Tags/form.vue"),
+  },
 
   {
     path: "/about",

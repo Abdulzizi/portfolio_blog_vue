@@ -93,7 +93,7 @@ const routes = [
     { name: 'Users', path: '/admin/users-list' },
     { name: 'Projects', path: '/admin/projects' },
     { name: 'Blogs', path: '/admin/blogs' },
-    { name: 'Tags', path: '/admin/tags' },
+    { name: 'Tags', path: '/admin/tags-list' },
     { name: 'Settings', path: '/admin/settings' },
 ]
 
