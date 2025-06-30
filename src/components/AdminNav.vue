@@ -25,7 +25,7 @@
                     <div class="relative">
                         <button @click="showUserMenu = !showUserMenu"
                             class="flex items-center space-x-2 text-sm font-medium hover:opacity-70 transition-opacity">
-                            <span>Abdul Zizi</span>
+                            <span>{{ user?.username || 'User' }}</span>
                             <ChevronDown class="w-4 h-4" />
                         </button>
 
@@ -80,6 +80,8 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/state/pinia'
 import { ChevronDown, Menu } from 'lucide-vue-next'
 
+const user = ref<{ username: string } | null>(null)
+
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -88,7 +90,7 @@ const showMobileMenu = ref(false)
 
 const routes = [
     { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Users', path: '/admin/users' },
+    { name: 'Users', path: '/admin/users-list' },
     { name: 'Projects', path: '/admin/projects' },
     { name: 'Blogs', path: '/admin/blogs' },
     { name: 'Tags', path: '/admin/tags' },
@@ -109,8 +111,21 @@ const handleClickOutside = (event: Event) => {
     }
 }
 
+const getUserUsername = async () => {
+    try {
+        const userStr = localStorage.getItem('user')
+        if (userStr) {
+            user.value = JSON.parse(userStr)
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 onMounted(() => {
     document.addEventListener('click', handleClickOutside)
+
+    getUserUsername();
 })
 
 onBeforeUnmount(() => {

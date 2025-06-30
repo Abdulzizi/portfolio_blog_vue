@@ -72,6 +72,84 @@ export const useUserStore = defineStore("user", {
       }
     },
 
+    async addUser(payload: Partial<User>): Promise<User | undefined> {
+      this.isLoading = true;
+      this.error = null;
+
+      try {
+        const response = await axios.post<{ data: User }>(
+          `${this.apiUrl}/v1/users`,
+          payload
+        );
+
+        const newUser = response.data.data;
+
+        this.users.push(newUser);
+
+        return newUser;
+      } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        this.error = axiosError.response?.data?.message || axiosError.message;
+        console.error("Add user error:", error);
+        return undefined;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async updateUser(
+      id: string | number,
+      payload: Partial<User>
+    ): Promise<boolean> {
+      this.isLoading = true;
+      this.error = null;
+
+      try {
+        const response = await axios.put<{ data: User }>(
+          `${this.apiUrl}/v1/users/${id}`,
+          payload
+        );
+
+        this.user = response.data.data;
+
+        const userStr = localStorage.getItem("user");
+        if (userStr) {
+          const user = JSON.parse(userStr) as User;
+          Object.assign(user, payload);
+          localStorage.setItem("user", JSON.stringify(user));
+        }
+
+        return true;
+      } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        this.error = axiosError.response?.data?.message || axiosError.message;
+        console.error("Update user error:", error);
+        return false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async deleteUser(id: string | number): Promise<boolean> {
+      this.isLoading = true;
+      this.error = null;
+
+      try {
+        await axios.delete(`${this.apiUrl}/v1/users/${id}`);
+
+        await this.getAllUsers();
+
+        return true;
+      } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        this.error = axiosError.response?.data?.message || axiosError.message;
+        console.error("Delete user error:", error);
+        return false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
     clearError() {
       this.error = null;
     },
@@ -82,7 +160,6 @@ export const useUserStore = defineStore("user", {
       this.totalUsers = 0;
       this.error = null;
     },
-
     clearOneUser() {
       this.user = {} as User;
       this.error = null;

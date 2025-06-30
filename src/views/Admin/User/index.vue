@@ -14,7 +14,7 @@
                     <h1 class="text-2xl font-bold text-gray-900">Users Management</h1>
                     <p class="text-gray-600">Manage user accounts and permissions</p>
                 </div>
-                <button
+                <button @click="goToAddUser"
                     class="px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors duration-300 flex items-center space-x-2">
                     <UserPlus class="w-4 h-4" />
                     <span>Add New User</span>
@@ -170,11 +170,17 @@ const deleteUser = async (userId) => {
 
     if (!confirmed) return
 
+    await userStore.deleteUser(userId);
+
     showSuccessToast("User deleted successfully")
 }
 
 const goToEditUser = async (userId) => {
-    router.push({ name: 'admin-users-edit', params: { id: userId } })
+    router.push({ name: 'admin-users-form', params: { id: userId } })
+}
+
+const goToAddUser = async () => {
+    router.push({ name: 'admin-users-form' })
 }
 
 onMounted(() => {

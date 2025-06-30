@@ -20,15 +20,15 @@ export default [
     component: () => import("../views/Admin/Dashboard/index.vue"),
   },
   {
-    path: "/admin/users",
+    path: "/admin/users-list",
     name: "admin-users",
     meta: { title: "Admin Users Page", authRequired: true },
     component: () => import("../views/Admin/User/index.vue"),
   },
   {
-    path: "/admin/users/:id",
-    name: "admin-users-edit",
-    meta: { title: "Admin Users Edit Page", authRequired: true },
+    path: "/admin/users/:id?",
+    name: "admin-users-form",
+    meta: { title: "Admin Users Form Page", authRequired: true },
     component: () => import("../views/Admin/User/form.vue"),
   },
 
