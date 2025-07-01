@@ -55,15 +55,23 @@
 
         <!-- Main Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <div v-if="projects.length === 0" class="text-center py-10 text-gray-500">
+                <p>No projects yet. Let's build something!</p>
+                <button @click="goToCreateProject" class="mt-4 px-4 py-2 bg-black text-white rounded hover:bg-gray-800">
+                    + Create Your First Project
+                </button>
+            </div>
+
             <!-- Recent Projects -->
-            <div class="lg:col-span-2 bg-white border border-black">
+            <div v-else class="lg:col-span-2 bg-white border border-black">
                 <div class="p-6 border-b border-black">
                     <div class="flex items-center justify-between">
                         <h2 class="text-lg font-bold">Recent Projects</h2>
-                        <button
-                            class="px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors duration-300">
+                        <!-- <button @click="goToCreateProject"
+                            class="p-4 border border-black hover:bg-yellow-300 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-left flex items-center space-x-3">
                             + New Project
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 
@@ -71,7 +79,7 @@
                     <div class="space-y-4">
                         <!-- Project Item -->
                         <div v-for="project in projects" :key="project.id"
-                            class="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 transition-colors duration-300">
+                            class="flex items-center justify-between p-4 border border-black rounded-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-white">
                             <div class="flex items-center space-x-3">
                                 <div :class="{
                                     'bg-gradient-to-br from-blue-500 to-purple-600': project.is_published === 1,
@@ -86,11 +94,8 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <span :class="{
-                                    'bg-green-100 text-green-800': project.status === 'Published',
-                                    'bg-yellow-100 text-yellow-800': project.status === 'Draft'
-                                }" class="px-2 py-1 text-xs font-medium">
-                                    {{ project.status }}
+                                <span class="px-2 py-1 text-xs font-medium rounded-full">
+                                    {{ project.is_published === 1 ? 'Published' : 'Draft' }}
                                 </span>
                                 <button class="text-gray-400 hover:text-gray-600">
                                     <Edit class="w-4 h-4" />
@@ -118,23 +123,11 @@
 
                     <div class="p-6">
                         <div class="space-y-3">
-                            <button
+                            <button @click="goToCreateProject"
                                 class="w-full p-4 border border-black hover:bg-yellow-300 transition-colors duration-300 text-left flex items-center space-x-3">
                                 <Plus class="w-5 h-5" />
                                 <span class="font-medium">Create New Project</span>
                             </button>
-
-                            <!-- <button
-                                class="w-full p-4 border border-black hover:bg-yellow-300 transition-colors duration-300 text-left flex items-center space-x-3">
-                                <Upload class="w-5 h-5" />
-                                <span class="font-medium">Upload Images</span>
-                            </button>
-
-                            <button
-                                class="w-full p-4 border border-black hover:bg-yellow-300 transition-colors duration-300 text-left flex items-center space-x-3">
-                                <Settings class="w-5 h-5" />
-                                <span class="font-medium">Site Settings</span>
-                            </button> -->
 
                             <button @click="goToLiveApp"
                                 class="w-full p-4 border border-black hover:bg-yellow-300 transition-colors duration-300 text-left flex items-center space-x-3">
@@ -152,11 +145,16 @@
                         <h2 class="text-lg font-bold">Recent Activity</h2>
                     </div>
 
-                    <div class="p-6">
+                    <div v-if="recentActivities.length === 0" class="text-sm text-gray-400 italic">
+                        No recent activity.
+                    </div>
+
+                    <div v-else class="p-6">
                         <div class="space-y-4">
                             <div v-for="activity in recentActivities" :key="activity.message"
                                 class="flex items-start space-x-3">
-                                <div class="w-2 h-2 rounded-full mt-2" :class="activityColor(activity.type)"></div>
+                                <div class="w-2 h-2 rounded-full mt-2" :class="activityColor(activity.type)"
+                                    style="animation: pulse 1.5s infinite"></div>
                                 <div>
                                     <p class="text-sm font-medium">{{ activity.message }}</p>
                                     <p class="text-xs text-gray-500">{{ activity.timestamp }}</p>
@@ -170,7 +168,7 @@
     </AdminLayout>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import {
     Folder,
     CheckCircle,
@@ -205,7 +203,7 @@ const draftCount = computed(() => projects.value.filter(project => !project.is_p
 const publishedCount = computed(() => projects.value.filter(project => project.is_published).length)
 const projectCount = computed(() => projects.value.length)
 
-const activityColor = (type: string) => {
+const activityColor = (type) => {
     switch (type) {
         case 'publish':
             return 'bg-green-500'
@@ -291,6 +289,10 @@ const viewAllProjects = () => {
 
 const goToLiveApp = () => {
     window.open(liveAppUrl)
+}
+
+const goToCreateProject = () => {
+    router.push({ name: 'admin-projects-form' })
 }
 
 onMounted(() => {
