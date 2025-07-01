@@ -1,12 +1,14 @@
 <template>
     <AdminLayout>
+        <FullPageLoader v-if="isLoading" />
+
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="bg-white p-6 border border-black">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Total Projects</p>
-                        <p class="text-3xl font-bold">12</p>
+                        <p class="text-3xl font-bold">{{ projectCount }}</p>
                     </div>
                     <div class="w-12 h-12 bg-blue-100 border border-black flex items-center justify-center">
                         <Folder class="w-6 h-6 text-blue-600" />
@@ -18,7 +20,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Published</p>
-                        <p class="text-3xl font-bold">8</p>
+                        <p class="text-3xl font-bold">{{ publishedCount }}</p>
                     </div>
                     <div class="w-12 h-12 bg-green-100 border border-black flex items-center justify-center">
                         <CheckCircle class="w-6 h-6 text-green-600" />
@@ -30,7 +32,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Draft</p>
-                        <p class="text-3xl font-bold">4</p>
+                        <p class="text-3xl font-bold">{{ draftCount }}</p>
                     </div>
                     <div class="w-12 h-12 bg-yellow-100 border border-black flex items-center justify-center">
                         <Edit class="w-6 h-6 text-yellow-600" />
@@ -68,80 +70,28 @@
                 <div class="p-6">
                     <div class="space-y-4">
                         <!-- Project Item -->
-                        <div
+                        <div v-for="project in projects" :key="project.id"
                             class="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 transition-colors duration-300">
                             <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
-                                    W
+                                <div :class="{
+                                    'bg-gradient-to-br from-blue-500 to-purple-600': project.is_published === 1,
+                                    'bg-gradient-to-br from-yellow-500 to-orange-600': project.is_published === 0
+                                }" class="w-10 h-10 flex items-center justify-center text-white text-xs font-bold">
+                                    {{ project.title.slice(0, 1) }}
                                 </div>
                                 <div>
-                                    <h3 class="font-medium">E-Commerce Platform</h3>
-                                    <p class="text-sm text-gray-600">WEB DESIGN • 2024</p>
+                                    <h3 class="font-medium">{{ project.title }}</h3>
+                                    <p class="text-sm text-gray-600">{{ project.tech_stack }} • {{
+                                        formatPeriod(project.start_date, project.end_date) }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800">Published</span>
-                                <button class="text-gray-400 hover:text-gray-600">
-                                    <Edit class="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
-
-                        <div
-                            class="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 transition-colors duration-300">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 bg-yellow-300 flex items-center justify-center text-black text-xs font-bold">
-                                    B
-                                </div>
-                                <div>
-                                    <h3 class="font-medium">Tech Startup Branding</h3>
-                                    <p class="text-sm text-gray-600">BRANDING • 2024</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800">Published</span>
-                                <button class="text-gray-400 hover:text-gray-600">
-                                    <Edit class="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
-
-                        <div
-                            class="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 transition-colors duration-300">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 bg-black flex items-center justify-center text-white text-xs font-bold">
-                                    M
-                                </div>
-                                <div>
-                                    <h3 class="font-medium">Fitness Tracker App</h3>
-                                    <p class="text-sm text-gray-600">MOBILE APP • 2023</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800">Draft</span>
-                                <button class="text-gray-400 hover:text-gray-600">
-                                    <Edit class="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
-
-                        <div
-                            class="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 transition-colors duration-300">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 bg-green-400 flex items-center justify-center text-black text-xs font-bold">
-                                    V
-                                </div>
-                                <div>
-                                    <h3 class="font-medium">Brand Campaign Video</h3>
-                                    <p class="text-sm text-gray-600">VIDEO • 2024</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800">Published</span>
+                                <span :class="{
+                                    'bg-green-100 text-green-800': project.status === 'Published',
+                                    'bg-yellow-100 text-yellow-800': project.status === 'Draft'
+                                }" class="px-2 py-1 text-xs font-medium">
+                                    {{ project.status }}
+                                </span>
                                 <button class="text-gray-400 hover:text-gray-600">
                                     <Edit class="w-4 h-4" />
                                 </button>
@@ -150,7 +100,8 @@
                     </div>
 
                     <div class="mt-6 text-center">
-                        <button class="text-sm font-medium hover:opacity-70 transition-opacity">
+                        <button @click="viewAllProjects"
+                            class="text-sm font-medium hover:opacity-70 transition-opacity">
                             View All Projects →
                         </button>
                     </div>
@@ -173,7 +124,7 @@
                                 <span class="font-medium">Create New Project</span>
                             </button>
 
-                            <button
+                            <!-- <button
                                 class="w-full p-4 border border-black hover:bg-yellow-300 transition-colors duration-300 text-left flex items-center space-x-3">
                                 <Upload class="w-5 h-5" />
                                 <span class="font-medium">Upload Images</span>
@@ -183,13 +134,14 @@
                                 class="w-full p-4 border border-black hover:bg-yellow-300 transition-colors duration-300 text-left flex items-center space-x-3">
                                 <Settings class="w-5 h-5" />
                                 <span class="font-medium">Site Settings</span>
-                            </button>
+                            </button> -->
 
-                            <a href="/" target="_blank"
+                            <button @click="goToLiveApp"
                                 class="w-full p-4 border border-black hover:bg-yellow-300 transition-colors duration-300 text-left flex items-center space-x-3">
                                 <ExternalLink class="w-5 h-5" />
                                 <span class="font-medium">View Live Site</span>
-                            </a>
+                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -202,35 +154,12 @@
 
                     <div class="p-6">
                         <div class="space-y-4">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                            <div v-for="activity in recentActivities" :key="activity.message"
+                                class="flex items-start space-x-3">
+                                <div class="w-2 h-2 rounded-full mt-2" :class="activityColor(activity.type)"></div>
                                 <div>
-                                    <p class="text-sm font-medium">Project "E-Commerce Platform" published</p>
-                                    <p class="text-xs text-gray-500">2 hours ago</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                                <div>
-                                    <p class="text-sm font-medium">New project "Portfolio Website" created</p>
-                                    <p class="text-xs text-gray-500">1 day ago</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-                                <div>
-                                    <p class="text-sm font-medium">Project "Fitness App" updated</p>
-                                    <p class="text-xs text-gray-500">3 days ago</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
-                                <div>
-                                    <p class="text-sm font-medium">Site settings updated</p>
-                                    <p class="text-xs text-gray-500">1 week ago</p>
+                                    <p class="text-sm font-medium">{{ activity.message }}</p>
+                                    <p class="text-xs text-gray-500">{{ activity.timestamp }}</p>
                                 </div>
                             </div>
                         </div>
@@ -248,18 +177,46 @@ import {
     Edit,
     Tag,
     Plus,
-    Upload,
-    Settings,
     ExternalLink
 } from 'lucide-vue-next'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import AdminLayout from '@/Layout/AdminLayout.vue'
 import FullPageLoader from '@/components/FullPageLoader.vue'
-import { useTagStore } from "@/state/pinia"
+import { useTagStore, useProjectStore } from "@/state/pinia"
+import { formatPeriod } from '@/helpers/formatters'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
+
+const liveAppUrl = import.meta.env.VITE_LIVE_APP_URL;
 
 const tagStore = useTagStore()
+const projectStore = useProjectStore()
+
+const router = useRouter()
 
 const tags = ref([])
+const projects = ref([])
+
+const isLoading = computed(() => projectStore.isLoading)
+const draftCount = computed(() => projects.value.filter(project => !project.is_published).length)
+const publishedCount = computed(() => projects.value.filter(project => project.is_published).length)
+const projectCount = computed(() => projects.value.length)
+
+const activityColor = (type: string) => {
+    switch (type) {
+        case 'publish':
+            return 'bg-green-500'
+        case 'create':
+            return 'bg-blue-500'
+        case 'update':
+            return 'bg-yellow-500'
+        default:
+            return 'bg-gray-400'
+    }
+}
 
 const getTags = async () => {
     try {
@@ -273,8 +230,72 @@ const getTags = async () => {
     }
 }
 
+const getProjects = async () => {
+    try {
+        await projectStore.fetchAllProjects()
+
+        if (projectStore.projects) {
+            projects.value = projectStore.projects
+        }
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
+}
+
+const recentActivities = computed(() => {
+    return projects.value
+        .flatMap(project => {
+            const items = []
+
+            if (project.created_at) {
+                items.push({
+                    type: 'create',
+                    message: `Project "${project.title}" created`,
+                    // raw ISO date
+                    time: project.created_at
+                })
+            }
+
+            if (project.updated_at && project.updated_at !== project.created_at) {
+                items.push({
+                    type: 'update',
+                    message: `Project "${project.title}" updated`,
+                    time: project.updated_at
+                })
+            }
+
+            if (project.isPublished || project.status === 'Published') {
+                items.push({
+                    type: 'publish',
+                    message: `Project "${project.title}" published`,
+                    time: project.updated_at || project.created_at
+                })
+            }
+
+            return items
+        })
+        // 1. sort by real millis — newest first
+        .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+        // 2. 'limit
+        .slice(0, 5)
+        // 3. _after_ sorting/limiting, add the human‑readable string
+        .map(item => ({
+            ...item,
+            timestamp: dayjs(item.time).fromNow()
+        }))
+})
+
+const viewAllProjects = () => {
+    router.push({ name: 'admin-projects' })
+}
+
+const goToLiveApp = () => {
+    window.open(liveAppUrl)
+}
+
 onMounted(() => {
     getTags();
+    getProjects();
 })
 
 </script>
