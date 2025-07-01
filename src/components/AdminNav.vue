@@ -91,7 +91,7 @@ const showMobileMenu = ref(false)
 const routes = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Users', path: '/admin/users-list' },
-    { name: 'Projects', path: '/admin/projects' },
+    { name: 'Projects', path: '/admin/projects-list' },
     { name: 'Blogs', path: '/admin/blogs' },
     { name: 'Tags', path: '/admin/tags-list' },
     { name: 'Settings', path: '/admin/settings' },

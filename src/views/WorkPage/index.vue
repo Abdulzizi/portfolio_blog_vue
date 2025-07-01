@@ -15,16 +15,10 @@
 
                 <!-- Slide 2: Featured Projects Grid -->
                 <div class="w-screen h-full flex-shrink-0 flex items-center px-6 md:px-20">
-                    <div ref="projectsGrid" class="w-full h-4/5">
+                    <div ref="projectsGrid" class="w-full">
                         <div v-if="enrichedProjects.length > 0">
                             <ProjectGrid :projects="enrichedProjects" :max-display="5" :show-featured="true"
                                 @show-more="goToAllProjects" />
-                            <div class="flex items-center justify-center">
-                                <router-link to="/all-projects"
-                                    class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
-                                    View All Projects
-                                </router-link>
-                            </div>
                         </div>
                         <div v-else class="flex flex-col items-center justify-center h-full text-center">
                             <h2 class="text-2xl font-bold mb-4">No featured projects... yet 👀</h2>
@@ -174,7 +168,7 @@ const handleResize = () => {
 
 const fetchAllProjects = async () => {
     try {
-        await projectStore.fetchAll();
+        await projectStore.fetchAllProjects();
 
         if (projectStore.projects.length > 0) {
             projects.value = projectStore.projects

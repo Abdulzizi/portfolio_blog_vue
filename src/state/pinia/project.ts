@@ -37,7 +37,7 @@ interface ProjectState {
   projects: Project[];
   project: Project | {};
   meta: ProjectListMeta | null;
-  loading: boolean;
+  isLoading: boolean;
   error: string | null;
 }
 
@@ -47,7 +47,7 @@ export const useProjectStore = defineStore("project", {
     projects: [],
     project: {},
     meta: null,
-    loading: false,
+    isLoading: false,
     error: null,
   }),
 
@@ -75,8 +75,8 @@ export const useProjectStore = defineStore("project", {
   },
 
   actions: {
-    async fetchAll(): Promise<void> {
-      this.loading = true;
+    async fetchAllProjects(): Promise<void> {
+      this.isLoading = true;
       this.error = null;
 
       try {
@@ -95,12 +95,12 @@ export const useProjectStore = defineStore("project", {
         this.projects = [];
         this.meta = null;
       } finally {
-        this.loading = false;
+        this.isLoading = false;
       }
     },
 
     async fetchBySlug(slug: string): Promise<void> {
-      this.loading = true;
+      this.isLoading = true;
       this.error = null;
 
       try {
@@ -119,7 +119,66 @@ export const useProjectStore = defineStore("project", {
         this.project = [];
         this.meta = null;
       } finally {
-        this.loading = false;
+        this.isLoading = false;
+      }
+    },
+
+    async fetchProductById(id: string): Promise<void> {
+      this.isLoading = true;
+      this.error = null;
+
+      try {
+        const res = await axios.get<ProjectBySlugResponse>(
+          `${this.apiUrl}/v1/projects/${id}`
+        );
+
+        this.project = res.data.data;
+
+        this.meta = null;
+      } catch (err) {
+        const e = err as AxiosError<{ message: string }>;
+        this.error = e.response?.data?.message || e.message;
+        console.error("Fetch project error:", err);
+
+        this.project = [];
+        this.meta = null;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async updateProject(id: string, payload: Partial<Project>): Promise<void> {
+      this.isLoading = true;
+      this.error = null;
+
+      try {
+        const response = await axios.put<{ data: Project }>(
+          `${this.apiUrl}/v1/projects/${id}`,
+          payload
+        );
+        this.project = response.data.data;
+      } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        this.error = axiosError.response?.data?.message || axiosError.message;
+        console.error("Update project error:", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async deleteProject(id: string): Promise<void> {
+      this.isLoading = true;
+      this.error = null;
+
+      try {
+        await axios.delete(`${this.apiUrl}/v1/projects/${id}`);
+        await this.fetchAllProjects();
+      } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        this.error = axiosError.response?.data?.message || axiosError.message;
+        console.error("Delete project error:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -127,6 +186,11 @@ export const useProjectStore = defineStore("project", {
       this.projects = [];
       this.project = {};
       this.meta = null;
+      this.error = null;
+    },
+
+    clearOneProject() {
+      this.project = {};
       this.error = null;
     },
 

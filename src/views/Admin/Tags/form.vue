@@ -358,17 +358,14 @@ const goBackToTags = () => {
     router.push('/admin/tags-list')
 }
 
-// Lifecycle
 onMounted(() => {
     if (isEditMode.value) {
         getTag()
     } else {
-        // Clear any existing tag data for add mode
         tagStore.clearOneTag()
     }
 })
 
-// Clear tag data when component unmounts
 onUnmounted(() => {
     tagStore.clearOneTag()
     showSuccessMessage.value = false

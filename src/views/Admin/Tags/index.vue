@@ -130,7 +130,7 @@ const deleteTag = async (tagId) => {
     const confirmed = await modalRef.value.openModal()
     if (!confirmed) return
 
-    // const success = await tagStore.deleteTag(tagId)
+    const success = await tagStore.deleteTag(tagId)
     if (success) showSuccessToast('Tag deleted successfully')
 }
 

@@ -41,8 +41,8 @@
             <div class="bg-white p-6 border border-black">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-600">Categories</p>
-                        <p class="text-3xl font-bold">5</p>
+                        <p class="text-sm font-medium text-gray-600">Tags</p>
+                        <p class="text-3xl font-bold">{{ tags.length }}</p>
                     </div>
                     <div class="w-12 h-12 bg-purple-100 border border-black flex items-center justify-center">
                         <Tag class="w-6 h-6 text-purple-600" />
@@ -242,8 +242,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useRouter } from 'vue-router'
-// import { useAuthStore } from '@/state/pinia'
 import {
     Folder,
     CheckCircle,
@@ -254,15 +252,29 @@ import {
     Settings,
     ExternalLink
 } from 'lucide-vue-next'
-
+import { onMounted, ref } from 'vue'
 import AdminLayout from '@/Layout/AdminLayout.vue'
+import FullPageLoader from '@/components/FullPageLoader.vue'
+import { useTagStore } from "@/state/pinia"
 
-// const router = useRouter()
-// const authStore = useAuthStore()
+const tagStore = useTagStore()
 
-// Handle logout
-// const handleLogout = async () => {
-//     await authStore.logout()
-//     router.push('/login')
-// }
+const tags = ref([])
+
+const getTags = async () => {
+    try {
+        await tagStore.getAllTags()
+
+        if (tagStore.tags) {
+            tags.value = tagStore.tags
+        }
+    } catch (error) {
+        console.error('Error fetching tags:', error);
+    }
+}
+
+onMounted(() => {
+    getTags();
+})
+
 </script>

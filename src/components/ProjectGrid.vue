@@ -10,7 +10,6 @@
                 class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
                 <span class="mr-2">+</span>
                 View All Projects
-                <!-- <span class="ml-2 text-xs opacity-70">({{ remainingCount }} more)</span> -->
             </router-link>
         </div>
     </div>
