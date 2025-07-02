@@ -61,8 +61,8 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Project Slug <span class="text-red-500">*</span>
                             </label>
-                            <input v-model="form.slug" type="text" required placeholder="project-slug"
-                                class="w-full px-4 py-3 border border-black focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition-all duration-300 font-mono text-sm"
+                            <input v-model="form.slug" disabled type="text" required placeholder="project-slug"
+                                class="w-full px-4 py-3 border text-gray-500 border-black focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition-all duration-300 font-mono text-sm"
                                 :class="{ 'border-red-500': errors.slug }" />
                             <p v-if="errors.slug" class="text-red-500 text-sm mt-1">{{ errors.slug }}</p>
                             <p class="text-xs text-gray-500 mt-1">URL-friendly version of the title (auto-generated)</p>
@@ -100,7 +100,8 @@
                         <!-- Tech Stack -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Tech Stack <span class="text-red-500">*</span>
+                                Tech Stack <span class="text-red-500">*</span> ({{ form.tech_stack.length }}/{{ MAX_TECH
+                                }})
                             </label>
                             <div class="space-y-3">
                                 <!-- Tech Stack Input -->
@@ -128,7 +129,7 @@
                                 </div>
 
                                 <!-- Common Tech Stack Suggestions -->
-                                <div class="flex flex-wrap gap-2">
+                                <div v-if="form.tech_stack.length < 4" class="flex flex-wrap gap-2">
                                     <span class="text-xs text-gray-500 mr-2">Quick add:</span>
                                     <button v-for="suggestion in techSuggestions" :key="suggestion" type="button"
                                         @click="addSuggestedTech(suggestion)"
@@ -203,9 +204,28 @@
                             </p>
                         </div>
 
+                        <!-- Created/Updated Info (Edit Mode Only) -->
+                        <div v-if="isEditMode && (project?.created_at || project?.updated_at)"
+                            class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div v-if="project?.created_at">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Created At
+                                </label>
+                                <input :value="formatDate(project?.created_at)" type="text" disabled
+                                    class="w-full px-4 py-3 border border-gray-300 bg-gray-50 text-gray-500" />
+                            </div>
+                            <div v-if="project?.updated_at">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Last Updated
+                                </label>
+                                <input :value="formatDate(project?.updated_at)" type="text" disabled
+                                    class="w-full px-4 py-3 border border-gray-300 bg-gray-50 text-gray-500" />
+                            </div>
+                        </div>
+
                         <!-- Thumbnail Upload (Optional) -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class=" text-sm font-medium text-gray-700 mb-2">
                                 Project Thumbnail <span class="text-gray-500">(Optional)</span>
                             </label>
                             <div
@@ -470,6 +490,9 @@ const project = computed(() => projectStore.project)
 const isEditMode = computed(() => !!route.params.id)
 const projectId = computed(() => route.params.id)
 
+const MAX_TECH = 4
+const MIN_TECH = 1
+
 // Watch for project data and populate form (edit mode only)
 watch(project, (newProject) => {
     if (newProject && isEditMode.value && Object.keys(newProject).length > 0) {
@@ -520,20 +543,33 @@ const generateSlug = () => {
 }
 
 const addTech = () => {
-    if (newTech.value.trim() && !form.value.tech_stack.includes(newTech.value.trim())) {
-        form.value.tech_stack.push(newTech.value.trim())
+    const trimmed = newTech.value.trim();
+
+    if (trimmed && !form.value.tech_stack.includes(trimmed) && form.value.tech_stack.length < MAX_TECH) {
+        form.value.tech_stack.push(trimmed)
         newTech.value = ''
+    } else {
+        showErrorToast('Error', 'Tech stack limit reached')
     }
 }
 
 const addSuggestedTech = (tech) => {
-    if (!form.value.tech_stack.includes(tech)) {
+    if (
+        !form.value.tech_stack.includes(tech) &&
+        form.value.tech_stack.length < MAX_TECH
+    ) {
         form.value.tech_stack.push(tech)
+    } else {
+        showErrorToast('Error', 'Tech stack limit reached')
     }
 }
 
 const removeTech = (index) => {
-    form.value.tech_stack.splice(index, 1)
+    if (form.value.tech_stack.length > MIN_TECH && index >= 0 && index < form.value.tech_stack.length) {
+        form.value.tech_stack.splice(index, 1)
+    } else {
+        showErrorToast('Error', 'Tech stack Minimal 1 Item')
+    }
 }
 
 const handleStillWorkingChange = () => {
@@ -669,7 +705,8 @@ const handleSubmit = async () => {
             description: form.value.description.trim(),
             link: form.value.link.trim(),
             slug: form.value.slug.trim(),
-            tech_stack: JSON.stringify(form.value.tech_stack),
+            // tech_stack: JSON.stringify(form.value.tech_stack),
+            tech_stack: form.value.tech_stack,
             start_date: form.value.start_date,
             end_date: stillWorking.value ? null : form.value.end_date,
             is_published: form.value.is_published ? 1 : 0,
@@ -678,10 +715,12 @@ const handleSubmit = async () => {
         }
 
         if (isEditMode.value) {
+            // console.log(JSON.stringify(projectData));
+
             const success = await projectStore.updateProject(projectId.value, projectData)
             if (success) {
                 showSuccessToast('Success', 'Project updated successfully')
-                router.push('/admin/projects-list')
+                router.push({ name: 'admin-projects' })
             } else {
                 showErrorToast('Error', projectStore.error || 'Failed to update project')
             }
@@ -691,7 +730,7 @@ const handleSubmit = async () => {
                 showSuccessToast('Success', 'Project created successfully')
                 showSuccessMessage.value = true
                 setTimeout(() => {
-                    router.push('/admin/projects-list')
+                    router.push({ name: 'admin-projects' })
                 }, 2000)
             } else {
                 showErrorToast('Error', projectStore.error || 'Failed to create project')
@@ -720,7 +759,6 @@ const resetForm = () => {
         form.value.images = project.value.images || []
         stillWorking.value = !project.value.end_date
     } else {
-        // Clear form for add mode
         form.value.title = ''
         form.value.description = ''
         form.value.link = ''

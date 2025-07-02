@@ -204,8 +204,13 @@ const deleteProject = async (projectId) => {
     const confirmed = await modalRef.value.openModal()
     if (!confirmed) return
 
-    const success = await projectStore.deleteProject(projectId)
-    if (success) showSuccessToast('Project deleted successfully')
+    try {
+        await projectStore.deleteProject(projectId)
+        showSuccessToast('Project deleted successfully')
+    } catch (error) {
+        showErrorToast('Error', error.message || 'Failed to delete project')
+        console.error('Error deleting project:', error);
+    }
 }
 
 const goToEditProject = (projectId) => {

@@ -84,6 +84,8 @@ export const useProjectStore = defineStore("project", {
           `${this.apiUrl}/v1/projects`
         );
 
+        // console.log(res.data.status_code);
+
         const { list, meta } = res.data.data;
         this.projects = list;
         this.meta = meta ?? null;
@@ -147,20 +149,56 @@ export const useProjectStore = defineStore("project", {
       }
     },
 
-    async updateProject(id: string, payload: Partial<Project>): Promise<void> {
+    async addProject(payload: Project): Promise<boolean> {
       this.isLoading = true;
       this.error = null;
 
       try {
-        const response = await axios.put<{ data: Project }>(
-          `${this.apiUrl}/v1/projects/${id}`,
-          payload
-        );
-        this.project = response.data.data;
+        const response = await axios.post<{
+          status_code: number;
+          data: Project;
+        }>(`${this.apiUrl}/v1/projects`, payload);
+
+        if (response.data.status_code === 200) {
+          this.project = response.data.data;
+          return true;
+        } else {
+          this.error = `Unexpected status code: ${response.data.status_code}`;
+          return false;
+        }
+      } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        this.error = axiosError.response?.data?.message || axiosError.message;
+        console.error("Add project error:", error);
+        return false;
+      }
+    },
+
+    async updateProject(
+      id: string,
+      payload: Partial<Project>
+    ): Promise<boolean> {
+      this.isLoading = true;
+      this.error = null;
+
+      try {
+        const response = await axios.put<{
+          status_code: number;
+          data: Project;
+        }>(`${this.apiUrl}/v1/projects/${id}`, payload);
+
+        if (response.data.status_code === 200) {
+          this.project = response.data.data;
+          return true;
+        } else {
+          this.error = `Unexpected status code: ${response.data.status_code}`;
+          return false;
+        }
       } catch (error) {
         const axiosError = error as AxiosError<{ message: string }>;
         this.error = axiosError.response?.data?.message || axiosError.message;
         console.error("Update project error:", error);
+        return false;
       } finally {
         this.isLoading = false;
       }

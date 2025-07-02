@@ -268,14 +268,6 @@ const recentActivities = computed(() => {
                 })
             }
 
-            if (project.isPublished || project.status === 'Published') {
-                items.push({
-                    type: 'publish',
-                    message: `Project "${project.title}" published`,
-                    time: project.updated_at || project.created_at
-                })
-            }
-
             return items
         })
         .filter(item => {

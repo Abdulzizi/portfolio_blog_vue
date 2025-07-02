@@ -94,7 +94,7 @@ const handleSubmit = async () => {
 
             setTimeout(() => {
                 window.location.href = "/dashboard";
-            }, 1000);
+            }, 500);
         } else {
             console.log(`Error : `, authStore.response.error);
             showErrorToast("Login Failed", authStore.response.error[0]);

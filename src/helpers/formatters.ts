@@ -18,7 +18,22 @@ export function formatPeriod(
       year: "numeric",
     });
 
-  if (!endDate || startDate === endDate) return format(startDate);
+  if (!endDate) return `${format(startDate)} – present`;
+
+  if (startDate === endDate) return format(startDate);
 
   return `${format(startDate)} – ${format(endDate)}`;
+}
+
+export function formatDate(dateString?: string | null): string {
+  if (!dateString) return "N/A";
+
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
