@@ -3,7 +3,7 @@
         <div class="min-h-screen bg-white py-12 pb-28" ref="slideInSection">
             <div v-if="loading" class="flex items-center justify-center h-screen">
                 <!-- Spinner -->
-                <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-green-500 border-solid"></div>
+                <Spinner />
             </div>
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-12">
@@ -45,6 +45,7 @@ import gsap from "gsap"
 import { useProjectStore } from "@/state/pinia"
 import Layout from '@/Layout/LayoutWithNav.vue'
 import ProjectGrid from '@/components/ProjectGrid.vue'
+import Spinner from '@/components/Spinner.vue'
 
 const projectStore = useProjectStore()
 const loading = ref(true)

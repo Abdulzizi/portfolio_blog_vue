@@ -3,7 +3,7 @@
         <div class="min-h-screen bg-white" ref="slideInSection">
             <div v-if="loading" class="flex items-center justify-center h-screen">
                 <!-- Spinner -->
-                <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-green-500 border-solid"></div>
+                <Spinner />
             </div>
 
             <div v-else-if="project">
@@ -100,6 +100,7 @@ import { useRoute } from 'vue-router'
 import Layout from '@/Layout/LayoutWithNav.vue'
 import gsap from 'gsap'
 import { useLenis } from '@/composables/useLenis'
+import Spinner from '@/components/Spinner.vue'
 
 import { useProjectStore } from '@/state/pinia'
 import { safeParse, formatPeriod } from '@/helpers/formatters'

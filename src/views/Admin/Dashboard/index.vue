@@ -145,8 +145,14 @@
                         <h2 class="text-lg font-bold">Recent Activity</h2>
                     </div>
 
-                    <div v-if="recentActivities.length === 0" class="text-sm text-gray-400 italic">
-                        No recent activity.
+                    <div v-if="recentActivities.length === 0" class="p-6 text-center">
+                        <div class="text-3xl font-bold text-gray-400">
+                            No recent activity.
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500">
+                            It looks like there hasn't been any activity lately. Maybe you should create a new project?
+                            🤔
+                        </p>
                     </div>
 
                     <div v-else class="p-6">
@@ -271,6 +277,9 @@ const recentActivities = computed(() => {
             }
 
             return items
+        })
+        .filter(item => {
+            return dayjs().diff(dayjs(item.time), 'day') <= 3
         })
         // 1. sort by real millis — newest first
         .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())

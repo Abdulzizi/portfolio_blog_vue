@@ -16,10 +16,16 @@
                 <!-- Slide 2: Featured Projects Grid -->
                 <div class="w-screen h-full flex-shrink-0 flex items-center px-6 md:px-20">
                     <div ref="projectsGrid" class="w-full">
-                        <div v-if="enrichedProjects.length > 0">
+
+                        <div v-if="isLoading" class="h-[300px] flex items-center justify-center">
+                            <Spinner />
+                        </div>
+
+                        <div v-else-if="enrichedProjects.length > 0">
                             <ProjectGrid :projects="enrichedProjects" :max-display="5" :show-featured="true"
                                 @show-more="goToAllProjects" />
                         </div>
+
                         <div v-else class="flex flex-col items-center justify-center h-full text-center">
                             <h2 class="text-2xl font-bold mb-4">No featured projects... yet 👀</h2>
                             <p class="text-gray-600">Either I'm cooking up something epic or I just forgot to tag them
@@ -57,16 +63,22 @@
             <section class="min-h-screen px-6 py-12">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl font-bold mb-8 text-center">FEATURED WORK</h2>
-                    <div v-if="enrichedProjects.length > 0">
+
+                    <div v-if="isLoading" class="h-[300px] flex items-center justify-center">
+                        <Spinner />
+                    </div>
+
+                    <div v-else-if="enrichedProjects.length > 0">
                         <ProjectGrid :projects="enrichedProjects" :max-display="5" :show-featured="true"
                             @show-more="goToAllProjects" />
                         <div class="flex items-center justify-center mb-10 md:mb-0">
-                            <router-link to="/all-projects"
+                            <!-- <router-link to="/all-projects"
                                 class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
                                 View All Projects
-                            </router-link>
+                            </router-link> -->
                         </div>
                     </div>
+
                     <div v-else class="flex flex-col items-center justify-center h-[300px] text-center">
                         <h2 class="text-2xl font-bold mb-4">No featured stuff here 🚧</h2>
                         <p class="text-gray-600">Maybe I’m still designing them... or binge-watching tutorials 🤫</p>
@@ -86,6 +98,7 @@ import { useLenis } from "@/composables/useLenis"
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import Layout from '@/Layout/LayoutWithNav.vue'
 import ProjectGrid from '@/components/ProjectGrid.vue'
+import Spinner from '@/components/Spinner.vue'
 
 import { safeParse, formatPeriod } from '@/helpers/formatters'
 
@@ -93,9 +106,11 @@ import { useProjectStore } from "@/state/pinia";
 
 const projectStore = useProjectStore();
 
+const isLoading = computed(() => projectStore.isLoading);
+
 const projects = ref([]);
 
-const router = useRouter()
+const router = useRouter();
 
 const scrollContainer = ref(null)
 const heroText = ref(null)
@@ -168,6 +183,9 @@ const handleResize = () => {
 
 const fetchAllProjects = async () => {
     try {
+        projectStore.isLoading = true
+        await new Promise(resolve => setTimeout(resolve, 1000))
+
         await projectStore.fetchAllProjects();
 
         if (projectStore.projects.length > 0) {
