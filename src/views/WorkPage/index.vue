@@ -22,7 +22,7 @@
                         </div>
 
                         <div v-else-if="enrichedProjects.length > 0">
-                            <ProjectGrid :projects="enrichedProjects" :max-display="5" :show-featured="true"
+                            <ProjectGrid :projects="enrichedProjects" :max-display="4" :show-featured="false"
                                 @show-more="goToAllProjects" />
                         </div>
 

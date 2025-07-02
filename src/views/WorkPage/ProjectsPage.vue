@@ -14,7 +14,7 @@
                 </div>
 
                 <div v-if="projects.length > 0">
-                    <ProjectGrid :projects="projects" :max-display="50" :show-featured="false" :show-more-button="false"
+                    <ProjectGrid :projects="projects" :max-display="25" :show-featured="true" :show-more-button="false"
                         container-class="min-h-[400px]" />
                 </div>
 
@@ -55,7 +55,7 @@ const slideInSection = ref(null)
 const fetchAllProjects = async () => {
     try {
         loading.value = true
-        await projectStore.fetchAll();
+        await projectStore.fetchAllProjects();
 
         if (projectStore.projects.length > 0) {
             projects.value = projectStore.projects

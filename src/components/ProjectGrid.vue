@@ -52,10 +52,6 @@ const hasMoreProjects = computed(() => {
     return props.projects.length > props.maxDisplay
 })
 
-const remainingCount = computed(() => {
-    return Math.max(0, props.projects.length - props.maxDisplay)
-})
-
 const getCardSize = (index) => {
     if (index === 0 && props.showFeatured) return 'large'
     return 'normal'
