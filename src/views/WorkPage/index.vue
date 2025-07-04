@@ -15,17 +15,14 @@
 
                 <!-- Slide 2: Featured Projects Grid -->
                 <div class="w-screen h-full flex-shrink-0 flex items-center px-6 md:px-20">
-                    <div ref="projectsGrid" class="w-full">
-
+                    <div ref="projectsGrid" class="w-full max-w-7xl mx-auto">
                         <div v-if="isLoading" class="h-[300px] flex items-center justify-center">
                             <Spinner />
                         </div>
-
                         <div v-else-if="projects.length > 0">
-                            <ProjectGrid :projects="projects" :max-display="4" :show-featured="false"
-                                @show-more="goToAllProjects" />
+                            <ProjectGrid :projects="projects" :max-display="5" :show-featured="true"
+                                :show-more-button="false" container-class="h-auto" @show-more="goToAllProjects" />
                         </div>
-
                         <div v-else class="flex flex-col items-center justify-center h-full text-center">
                             <h2 class="text-2xl font-bold mb-4">No featured projects... yet 👀</h2>
                             <p class="text-gray-600">Either I'm cooking up something epic or I just forgot to tag them
@@ -40,7 +37,6 @@
                     class="nav-button w-12 h-12 border border-black bg-white hover:bg-yellow-200 transition-colors duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
                     <ChevronLeft class="w-6 h-6" />
                 </button>
-
                 <button @click="nextSlide" :disabled="currentSlide === totalSlides - 1"
                     class="nav-button w-12 h-12 border border-black bg-white hover:bg-yellow-200 transition-colors duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
                     <ChevronRight class="w-6 h-6" />
@@ -61,21 +57,18 @@
             </section>
 
             <section class="min-h-screen px-6 py-12">
-                <div class="max-w-4xl mx-auto">
-                    <h2 class="text-3xl font-bold mb-8 text-center">FEATURED WORK</h2>
-
+                <div class="max-w-7xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-12 text-center">FEATURED WORK</h2>
                     <div v-if="isLoading" class="h-[300px] flex items-center justify-center">
                         <Spinner />
                     </div>
-
                     <div v-else-if="projects.length > 0">
-                        <ProjectGrid :projects="projects" :max-display="5" :show-featured="true"
+                        <ProjectGrid :projects="projects" :max-display="8" :show-featured="true"
                             @show-more="goToAllProjects" />
                     </div>
-
                     <div v-else class="flex flex-col items-center justify-center h-[300px] text-center">
                         <h2 class="text-2xl font-bold mb-4">No featured stuff here 🚧</h2>
-                        <p class="text-gray-600">Maybe I’m still designing them... or binge-watching tutorials 🤫</p>
+                        <p class="text-gray-600">Maybe I'm still designing them... or binge-watching tutorials 🤫</p>
                     </div>
                 </div>
             </section>
@@ -85,7 +78,6 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-
 import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { useLenis } from "@/composables/useLenis"
@@ -93,34 +85,25 @@ import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import Layout from '@/Layout/LayoutWithNav.vue'
 import ProjectGrid from '@/components/ProjectGrid.vue'
 import Spinner from '@/components/Spinner.vue'
-
 import { useProjectStore } from "@/state/pinia";
 
 const projectStore = useProjectStore();
-
 const isLoading = computed(() => projectStore.isLoading);
-
 const projects = ref([]);
-
 const router = useRouter();
 
 const scrollContainer = ref(null)
 const heroText = ref(null)
 const projectsGrid = ref(null)
 const approachContent = ref(null)
-
 const currentSlide = ref(0)
 const totalSlides = ref(2)
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
-
 const isDesktop = computed(() => windowWidth.value >= 768)
 
 const fetchAllProjects = async () => {
     try {
-        // await new Promise(resolve => setTimeout(resolve, 1000))
-
         await projectStore.fetchAllProjects();
-
         if (projectStore.projects.length > 0) {
             projects.value = projectStore.projects
         } else {
@@ -130,7 +113,6 @@ const fetchAllProjects = async () => {
         console.error('[WORKPAGE, index.vue] Error fetching projects:', error);
     }
 }
-
 
 const goToAllProjects = () => {
     router.push('/projects')
@@ -179,7 +161,6 @@ const handleResize = () => {
 
 onMounted(() => {
     fetchAllProjects();
-
     if (heroText.value) {
         gsap.from(heroText.value, {
             y: 30,
@@ -188,7 +169,6 @@ onMounted(() => {
             ease: "power2.out"
         })
     }
-
     window.addEventListener('keydown', handleKeydown)
     window.addEventListener('resize', handleResize)
 })
@@ -198,5 +178,6 @@ onBeforeUnmount(() => {
     window.removeEventListener('resize', handleResize)
 })
 
+// Ensure useLenis is called at the top level
 useLenis();
 </script>
