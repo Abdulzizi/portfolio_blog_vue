@@ -1,5 +1,5 @@
 import axios from "axios";
-import { showErrorToast, showConfirmationDialog } from "@/helpers/alert";
+import { showErrorToast } from "@/helpers/alert";
 import { useAuthStore } from "@/state/pinia";
 
 export function axiosInterceptors() {

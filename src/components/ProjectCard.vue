@@ -1,7 +1,7 @@
 <template>
     <router-link :to="`/project/${project.slug}`" :class="[
         cardClasses,
-        'bg-gray-100 text-black dark:bg-gray-900 dark:text-white',
+        'bg-gray-100 text-black dark:bg-gray-900 dark:text-white shadow-md',
         'rounded-lg overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[240px] flex flex-col'
     ]">
         <!-- Project Image -->
@@ -21,16 +21,18 @@
                     {{ project.description }}
                 </p>
 
-                <div v-if="project.techStack && project.techStack.length" class="flex flex-wrap gap-1 mb-4">
-                    <span v-for="tag in project.techStack.slice(0, 3)" :key="tag"
+                <div v-if="project.tech_stack && project.tech_stack.length" class="flex flex-wrap gap-1 mb-4">
+                    <span v-for="tag in safeParse(project.tech_stack)" :key="tag"
                         class="text-xs px-2 py-1 rounded bg-black/10 dark:bg-white/20 opacity-80">
                         {{ tag }}
                     </span>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between pt-2">
-                <span class="text-sm font-medium">{{ project.periodLabel }}</span>
+            <div class="flex items-center justify-between pt-5">
+                <span class="text-sm font-medium">{{ project.start_date ? formatPeriod(project.start_date,
+                    project.end_date) : ''
+                    }}</span>
                 <div
                     class="w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-all duration-300 border border-black dark:border-white group-hover:bg-black dark:group-hover:bg-white group-hover:text-white dark:group-hover:text-black">
                     <ChevronRight class="w-3 h-3 md:w-4 md:h-4" />
@@ -43,6 +45,7 @@
 <script setup>
 import { computed } from 'vue'
 import { ChevronRight } from 'lucide-vue-next'
+import { safeParse, formatPeriod } from '@/helpers/formatters'
 
 const props = defineProps({
     project: {

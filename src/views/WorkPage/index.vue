@@ -21,8 +21,8 @@
                             <Spinner />
                         </div>
 
-                        <div v-else-if="enrichedProjects.length > 0">
-                            <ProjectGrid :projects="enrichedProjects" :max-display="4" :show-featured="false"
+                        <div v-else-if="projects.length > 0">
+                            <ProjectGrid :projects="projects" :max-display="4" :show-featured="false"
                                 @show-more="goToAllProjects" />
                         </div>
 
@@ -68,15 +68,9 @@
                         <Spinner />
                     </div>
 
-                    <div v-else-if="enrichedProjects.length > 0">
-                        <ProjectGrid :projects="enrichedProjects" :max-display="5" :show-featured="true"
+                    <div v-else-if="projects.length > 0">
+                        <ProjectGrid :projects="projects" :max-display="5" :show-featured="true"
                             @show-more="goToAllProjects" />
-                        <div class="flex items-center justify-center mb-10 md:mb-0">
-                            <!-- <router-link to="/all-projects"
-                                class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
-                                View All Projects
-                            </router-link> -->
-                        </div>
                     </div>
 
                     <div v-else class="flex flex-col items-center justify-center h-[300px] text-center">
@@ -100,8 +94,6 @@ import Layout from '@/Layout/LayoutWithNav.vue'
 import ProjectGrid from '@/components/ProjectGrid.vue'
 import Spinner from '@/components/Spinner.vue'
 
-import { safeParse, formatPeriod } from '@/helpers/formatters'
-
 import { useProjectStore } from "@/state/pinia";
 
 const projectStore = useProjectStore();
@@ -123,18 +115,22 @@ const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024
 
 const isDesktop = computed(() => windowWidth.value >= 768)
 
-const enrichedProjects = computed(() => {
-    if (!projectStore.projects.length) return []
+const fetchAllProjects = async () => {
+    try {
+        // await new Promise(resolve => setTimeout(resolve, 1000))
 
-    const firstId = projectStore.projects[0].id
+        await projectStore.fetchAllProjects();
 
-    return projectStore.projects.map((p) => ({
-        ...p,
-        techStack: safeParse(p.tech_stack),
-        periodLabel: formatPeriod(p.start_date, p.end_date),
-        featured: (p.images?.length ?? 0) > 0 || p.id === firstId,
-    }))
-})
+        if (projectStore.projects.length > 0) {
+            projects.value = projectStore.projects
+        } else {
+            console.error('[WORKPAGE, index.vue] No projects found');
+        }
+    } catch (error) {
+        console.error('[WORKPAGE, index.vue] Error fetching projects:', error);
+    }
+}
+
 
 const goToAllProjects = () => {
     router.push('/projects')
@@ -179,23 +175,6 @@ const handleKeydown = (event) => {
 
 const handleResize = () => {
     windowWidth.value = window.innerWidth
-}
-
-const fetchAllProjects = async () => {
-    try {
-        projectStore.isLoading = true
-        await new Promise(resolve => setTimeout(resolve, 1000))
-
-        await projectStore.fetchAllProjects();
-
-        if (projectStore.projects.length > 0) {
-            projects.value = projectStore.projects
-        } else {
-            console.error('[WORKPAGE, index.vue] No projects found');
-        }
-    } catch (error) {
-        console.error('[WORKPAGE, index.vue] Error fetching projects:', error);
-    }
 }
 
 onMounted(() => {
