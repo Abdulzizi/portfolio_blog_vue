@@ -45,11 +45,11 @@
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-black">
-                                Status
+                                Year
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-black">
-                                Year
+                                Status
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Actions
@@ -79,17 +79,19 @@
                                     {{ project.tech_stack }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                                    :class="{
-                                        'bg-green-100 text-green-800': project.is_published === 1,
-                                        'bg-yellow-100 text-yellow-800': project.is_published === 0
-                                    }">
-                                    {{ project.is_published === 1 ? 'Published' : 'Draft' }}
-                                </span>
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">
                                 {{ formatPeriod(project.start_date, project.end_date) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" v-model="project.is_published"
+                                        @change="onTogglePublish(project)" class="sr-only peer" />
+                                    <div
+                                        class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-green-500 relative transition-colors duration-300">
+                                        <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300"
+                                            :class="{ 'translate-x-full': project.is_published }"></div>
+                                    </div>
+                                </label>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center space-x-2">
@@ -211,6 +213,27 @@ const deleteProject = async (projectId) => {
     } catch (error) {
         showErrorToast('Error', error.message || 'Failed to delete project')
         console.error('Error deleting project:', error);
+    }
+}
+
+async function onTogglePublish(project) {
+    const newStatus = project.is_published ? 1 : 0;
+
+    try {
+        const success = await projectStore.updateProject(project.id, {
+            is_published: newStatus,
+        });
+
+        if (success) {
+            showSuccessToast('Publish status updated successfully.');
+        } else {
+            showErrorToast('Error', 'Failed to update publish status.');
+            project.is_published = newStatus === 1 ? 0 : 1;
+        }
+    } catch (error) {
+        showErrorToast('Error', error.message || 'An error occurred while updating publish status.');
+        console.error('Error updating publish status:', error);
+        project.is_published = newStatus === 1 ? 0 : 1;
     }
 }
 
