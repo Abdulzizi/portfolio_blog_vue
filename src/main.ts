@@ -6,6 +6,7 @@ import "vue-sonner/style.css";
 import pinia from "@/state/pinia";
 import { useAuthStore } from "@/state/pinia";
 import { axiosInterceptors } from "@/core/interceptor/axios-interceptor";
+import { Analytics } from "@vercel/analytics/next";
 
 import App from "./App.vue";
 import router from "./router";
@@ -13,6 +14,8 @@ import router from "./router";
 const app = createApp(App);
 
 app.use(pinia);
+
+app.component("VercelAnalytics", Analytics);
 
 (async () => {
   const authStore = useAuthStore();
