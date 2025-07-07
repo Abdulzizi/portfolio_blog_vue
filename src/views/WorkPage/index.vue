@@ -1,6 +1,7 @@
 <template>
     <Layout>
-        <div v-if="isDesktop" class="relative h-screen md:h-screen overflow-hidden bg-white">
+        <div v-if="isDesktop" class="relative h-screen md:h-screen overflow-hidden bg-white"
+            :class="{ 'overflow-x-hidden': !isDesktop }">
             <div ref="scrollContainer" class="flex h-full">
                 <!-- Slide 1: Hero Text -->
                 <div class="w-screen h-full flex-shrink-0 flex items-center justify-start px-6 md:px-20">
@@ -16,18 +17,8 @@
                 <!-- Slide 2: Featured Projects Grid -->
                 <div class="w-screen h-full flex-shrink-0 flex items-center px-6 md:px-20">
                     <div ref="projectsGrid" class="w-full max-w-7xl mx-auto">
-                        <div v-if="isLoading" class="h-[300px] flex items-center justify-center">
-                            <Spinner />
-                        </div>
-                        <div v-else-if="projects.length > 0">
-                            <ProjectGrid :projects="projects" :max-display="5" :show-featured="true"
-                                :show-more-button="false" container-class="h-auto" @show-more="goToAllProjects" />
-                        </div>
-                        <div v-else class="flex flex-col items-center justify-center h-full text-center">
-                            <h2 class="text-2xl font-bold mb-4">No featured projects... yet </h2>
-                            <p class="text-gray-600">Either I'm cooking up something epic or I just forgot to tag them
-                            </p>
-                        </div>
+                        <FeaturedProjects :projects="projects" :is-loading="isLoading" :max-display="8"
+                            :show-more="true" container-class="h-auto" @show-more="goToAllProjects" />
                     </div>
                 </div>
             </div>
@@ -59,17 +50,8 @@
             <section class="min-h-screen px-6 py-12">
                 <div class="max-w-7xl mx-auto">
                     <h2 class="text-3xl font-bold mb-12 text-center">FEATURED WORK</h2>
-                    <div v-if="isLoading" class="h-[300px] flex items-center justify-center">
-                        <Spinner />
-                    </div>
-                    <div v-else-if="projects.length > 0">
-                        <ProjectGrid :projects="projects" :max-display="8" :show-featured="true"
-                            @show-more="goToAllProjects" />
-                    </div>
-                    <div v-else class="flex flex-col items-center justify-center h-[300px] text-center">
-                        <h2 class="text-2xl font-bold mb-4">No featured stuff here 🚧</h2>
-                        <p class="text-gray-600">Maybe I'm still designing them... or binge-watching tutorials 🤫</p>
-                    </div>
+                    <FeaturedProjects :projects="projects" :is-loading="isLoading" :max-display="8" :show-more="true"
+                        container-class="h-auto" @show-more="goToAllProjects" />
                 </div>
             </section>
         </div>
@@ -77,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { useLenis } from "@/composables/useLenis"
@@ -85,6 +67,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import Layout from '@/Layout/LayoutWithNav.vue'
 import ProjectGrid from '@/components/ProjectGrid.vue'
 import Spinner from '@/components/Spinner.vue'
+import FeaturedProjects from './FeaturedProjects.vue'
 import { useProjectStore } from "@/state/pinia";
 
 const projectStore = useProjectStore();
@@ -100,6 +83,8 @@ const currentSlide = ref(0)
 const totalSlides = ref(2)
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
 const isDesktop = computed(() => windowWidth.value >= 768)
+
+const getViewportWidth = () => window.innerWidth || document.documentElement.clientWidth;
 
 const fetchAllProjects = async () => {
     try {
@@ -158,7 +143,7 @@ const handleKeydown = (event) => {
 }
 
 const handleResize = () => {
-    windowWidth.value = window.innerWidth
+    windowWidth.value = getViewportWidth()
 }
 
 onMounted(() => {
@@ -173,6 +158,9 @@ onMounted(() => {
     }
     window.addEventListener('keydown', handleKeydown)
     window.addEventListener('resize', handleResize)
+
+    document.body.setAttribute('tabindex', '0');
+    document.body.focus();
 })
 
 onBeforeUnmount(() => {
@@ -180,6 +168,11 @@ onBeforeUnmount(() => {
     window.removeEventListener('resize', handleResize)
 })
 
-// Ensure useLenis is called at the top level
+watchEffect(() => {
+    if (isDesktop.value) {
+        animateToSlide(currentSlide.value);
+    }
+});
+
 useLenis();
 </script>

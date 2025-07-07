@@ -1,18 +1,18 @@
 <template>
     <router-link :to="`/project/${project.slug}`"
-        class="group cursor-pointer transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl flex flex-col overflow-hidden"
+        class="group cursor-pointer transform transition-all duration-500 hover:scale-[1.02] hover:shadow-xl flex flex-col overflow-hidden"
         :class="[
             cardClasses,
             backgroundClasses,
             sizeClasses
         ]">
+
         <!-- Project Image -->
         <div v-if="project.thumbnail" class="overflow-hidden flex-shrink-0 relative" :class="imageClasses">
             <img :src="project.thumbnail" :alt="project.title"
                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-            <!-- Overlay for better text readability on featured cards -->
             <div v-if="featured"
-                class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             </div>
         </div>
 

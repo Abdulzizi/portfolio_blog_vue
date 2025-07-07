@@ -2,16 +2,13 @@
   <Layout>
     <div class="min-h-screen bg-white" ref="slideInSection">
       <div v-if="loading" class="flex items-center justify-center h-screen">
-        <!-- Spinner -->
         <Spinner />
       </div>
 
       <div v-else-if="project">
-        <!-- Hero Section -->
         <section class="py-12 md:py-20">
           <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <!-- Info -->
               <div>
                 <h1 class="text-4xl md:text-6xl font-bold mt-2 mb-6">
                   {{ project.title }}
@@ -31,11 +28,8 @@
                   <div v-if="project.techStack.length">
                     <h3 class="font-bold mb-3">Technologies</h3>
                     <div class="flex flex-wrap gap-2">
-                      <span
-                        v-for="tag in project.techStack.slice(0, 3)"
-                        :key="tag"
-                        class="px-3 py-1 bg-gray-100 text-sm rounded"
-                      >
+                      <span v-for="tag in project.techStack.slice(0, 3)" :key="tag"
+                        class="px-3 py-1 bg-gray-100 text-sm rounded">
                         {{ tag }}
                       </span>
                     </div>
@@ -43,22 +37,11 @@
                 </div>
               </div>
 
-              <!-- Image / Color Block -->
-              <div
-                :class="project.color ?? 'bg-gray-200'"
-                class="aspect-video rounded-lg flex items-center justify-center"
-              >
-                <img
-                  v-if="project.image"
-                  :src="project.image"
-                  :alt="project.title"
-                  class="w-full h-full object-cover rounded-lg"
-                />
-                <div
-                  v-else
-                  :class="project.textColor ?? 'text-black'"
-                  class="text-2xl font-bold opacity-50"
-                >
+              <div :class="project.color ?? 'bg-gray-200'"
+                class="aspect-video rounded-lg flex items-center justify-center shadow-xl border">
+                <img v-if="project.image" :src="project.image" :alt="project.title"
+                  class="w-full h-full object-cover rounded-lg" />
+                <div v-else :class="project.textColor ?? 'text-black'" class="text-2xl font-bold opacity-50">
                   {{ project.title }}
                 </div>
               </div>
@@ -67,32 +50,22 @@
         </section>
 
         <!-- Nav Section -->
-        <section class="py-8 border-t border-black">
+        <section class="py-8 border-t border-black md:pb-0 mb-16">
           <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center">
-              <router-link
-                to="/work"
-                class="inline-flex items-center text-sm font-medium hover:opacity-70 transition-opacity group"
-              >
+              <router-link to="/work"
+                class="inline-flex items-center text-sm font-medium hover:opacity-70 transition-opacity group">
                 ← BACK TO WORKS
-                <span
-                  class="ml-2 w-6 h-px bg-black transition-all duration-300 group-hover:w-10"
-                ></span>
+                <span class="ml-2 w-6 h-px bg-black transition-all duration-300 group-hover:w-10"></span>
               </router-link>
 
               <div class="flex gap-4">
-                <router-link
-                  v-if="previousProject"
-                  :to="`/project/${previousProject.slug}`"
-                  class="text-sm font-medium hover:opacity-70 transition-opacity"
-                >
+                <router-link v-if="previousProject" :to="`/project/${previousProject.slug}`"
+                  class="text-sm font-medium hover:opacity-70 transition-opacity">
                   ← {{ previousProject.title }}
                 </router-link>
-                <router-link
-                  v-if="nextProject"
-                  :to="`/project/${nextProject.slug}`"
-                  class="text-sm font-medium hover:opacity-70 transition-opacity"
-                >
+                <router-link v-if="nextProject" :to="`/project/${nextProject.slug}`"
+                  class="text-sm font-medium hover:opacity-70 transition-opacity">
                   {{ nextProject.title }} →
                 </router-link>
               </div>
@@ -100,10 +73,7 @@
           </div>
         </section>
       </div>
-      <div
-        v-else
-        class="flex items-center justify-center h-screen text-center px-4"
-      >
+      <div v-else class="flex items-center justify-center h-screen text-center px-4">
         <div>
           <h2 class="text-2xl md:text-4xl font-bold mb-4">
             There is no projects for now
@@ -113,10 +83,8 @@
             hat. Maybe it vanished in a puff of digital smoke, or it never
             existed in the first place!
           </p>
-          <router-link
-            to="/work"
-            class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group"
-          >
+          <router-link to="/work"
+            class="inline-flex items-center justify-center px-6 py-3 border border-black bg-white hover:bg-yellow-300 transition-colors duration-300 text-sm font-medium group">
             ← Back to Projects
           </router-link>
         </div>
