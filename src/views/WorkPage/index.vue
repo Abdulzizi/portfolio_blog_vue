@@ -24,9 +24,9 @@
                                 :show-more-button="false" container-class="h-auto" @show-more="goToAllProjects" />
                         </div>
                         <div v-else class="flex flex-col items-center justify-center h-full text-center">
-                            <h2 class="text-2xl font-bold mb-4">No featured projects... yet 👀</h2>
+                            <h2 class="text-2xl font-bold mb-4">No featured projects... yet </h2>
                             <p class="text-gray-600">Either I'm cooking up something epic or I just forgot to tag them
-                                😅</p>
+                            </p>
                         </div>
                     </div>
                 </div>
