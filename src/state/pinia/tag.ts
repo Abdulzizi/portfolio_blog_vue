@@ -35,8 +35,8 @@ export const useTagStore = defineStore("tag", {
         this.tags = list;
         this.totalTags = meta.total;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Fetch tags error:", error);
         this.tags = [];
         this.totalTags = 0;
@@ -57,8 +57,8 @@ export const useTagStore = defineStore("tag", {
         this.tag = response.data.data;
         return this.tag;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Fetch tag by ID error:", error);
         this.tag = {} as Tag;
         return undefined;
@@ -81,8 +81,8 @@ export const useTagStore = defineStore("tag", {
         this.tags.push(newTag);
         return newTag;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Add tag error:", error);
         return undefined;
       } finally {
@@ -103,8 +103,8 @@ export const useTagStore = defineStore("tag", {
         this.tag = response.data.data;
         return true;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Update tag error:", error);
         return false;
       } finally {
@@ -121,8 +121,8 @@ export const useTagStore = defineStore("tag", {
         await this.getAllTags();
         return true;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Delete tag error:", error);
         return false;
       } finally {

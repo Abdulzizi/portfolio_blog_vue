@@ -56,7 +56,7 @@
         <!-- Main Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            <div v-if="projects.length === 0" class="text-center py-10 text-gray-500">
+            <div v-if="projects.length === 0" class="text-center py-10 text-gray-500 lg:col-span-2">
                 <p>No projects yet. Let's build something!</p>
                 <button @click="goToCreateProject" class="mt-4 px-4 py-2 bg-black text-white rounded hover:bg-gray-800">
                     + Create Your First Project
@@ -68,16 +68,11 @@
                 <div class="p-6 border-b border-black">
                     <div class="flex items-center justify-between">
                         <h2 class="text-lg font-bold">Recent Projects</h2>
-                        <!-- <button @click="goToCreateProject"
-                            class="p-4 border border-black hover:bg-yellow-300 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-left flex items-center space-x-3">
-                            + New Project
-                        </button> -->
                     </div>
                 </div>
 
                 <div class="p-6">
                     <div class="space-y-4">
-                        <!-- Project Item -->
                         <div v-for="project in projects" :key="project.id"
                             class="flex items-center justify-between p-4 border border-black rounded-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-white">
                             <div class="flex items-center space-x-3">
@@ -97,7 +92,7 @@
                                 <span class="px-2 py-1 text-xs font-medium rounded-full">
                                     {{ project.is_published === 1 ? 'Published' : 'Draft' }}
                                 </span>
-                                <button class="text-gray-400 hover:text-gray-600">
+                                <button @click="goToEditProject(project.id)" class="text-gray-400 hover:text-gray-600">
                                     <Edit class="w-4 h-4" />
                                 </button>
                             </div>
@@ -115,7 +110,6 @@
 
             <!-- Quick Actions & Info -->
             <div class="space-y-8">
-                <!-- Quick Actions -->
                 <div class="bg-white border border-black">
                     <div class="p-6 border-b border-black">
                         <h2 class="text-lg font-bold">Quick Actions</h2>
@@ -146,12 +140,11 @@
                     </div>
 
                     <div v-if="recentActivities.length === 0" class="p-6 text-center">
-                        <div class="text-3xl font-bold text-gray-400">
+                        <div class="text-2xl font-bold text-gray-400">
                             No recent activity.
                         </div>
                         <p class="mt-2 text-sm text-gray-500">
                             It looks like there hasn't been any activity lately. Maybe you should create a new project?
-                            🤔
                         </p>
                     </div>
 
@@ -294,6 +287,10 @@ const goToLiveApp = () => {
 
 const goToCreateProject = () => {
     router.push({ name: 'admin-projects-form' })
+}
+
+const goToEditProject = (projectId) => {
+    router.push({ name: 'admin-projects-form', params: { id: projectId } })
 }
 
 onMounted(() => {

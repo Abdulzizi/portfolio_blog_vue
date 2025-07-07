@@ -128,15 +128,16 @@
             </div>
         </div>
 
-        <div v-else class="text-center py-20 text-gray-500">
-            <Folder class="w-16 h-16 text-gray-400 mx-auto mb-4" />
+        <div v-else class="flex flex-col items-center justify-center py-20 text-gray-500">
+            <Folder class="w-16 h-16 text-gray-400 mb-4" />
             <p class="text-lg">No projects found.</p>
-            <p class="text-sm mt-2">{{ statusFilter || categoryFilter ? 'Try adjusting filters' : 'Add first project' }}
+            <p class="text-sm mt-2">
+                {{
+                    statusFilter || categoryFilter
+                        ? `Try adjusting filters`
+                        : `Add your first project to get started`
+                }}
             </p>
-            <button v-if="!searchQuery && !statusFilter && !categoryFilter" @click="goToAddProject"
-                class="mt-4 px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors duration-300">
-                Add First Project
-            </button>
         </div>
     </AdminLayout>
 </template>

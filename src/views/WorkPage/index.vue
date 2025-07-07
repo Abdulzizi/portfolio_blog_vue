@@ -104,10 +104,12 @@ const isDesktop = computed(() => windowWidth.value >= 768)
 const fetchAllProjects = async () => {
     try {
         await projectStore.fetchAllProjects();
-        if (projectStore.projects.length > 0) {
-            projects.value = projectStore.projects
+
+        const publishedProjects = projectStore.projects.filter(project => project.is_published === 1);
+        if (publishedProjects.length > 0) {
+            projects.value = publishedProjects;
         } else {
-            console.error('[WORKPAGE, index.vue] No projects found');
+            console.error('[WORKPAGE, index.vue] No published projects found');
         }
     } catch (error) {
         console.error('[WORKPAGE, index.vue] Error fetching projects:', error);

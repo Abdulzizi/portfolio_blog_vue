@@ -850,6 +850,8 @@ const handleSubmit = async () => {
                     "Error",
                     projectStore.error || "Failed to create project"
                 );
+                console.log(projectStore.error);
+
             }
         }
     } catch (error) {

@@ -35,8 +35,8 @@ export const useUserStore = defineStore("user", {
         this.users = list;
         this.totalUsers = meta.total;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Fetch users error:", error);
 
         this.users = [];
@@ -60,9 +60,8 @@ export const useUserStore = defineStore("user", {
 
         this.user = userData;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Fetch user by ID error:", error);
         this.user = {} as User;
 
@@ -88,8 +87,8 @@ export const useUserStore = defineStore("user", {
 
         return newUser;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Add user error:", error);
         return undefined;
       } finally {
@@ -121,8 +120,8 @@ export const useUserStore = defineStore("user", {
 
         return true;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Update user error:", error);
         return false;
       } finally {
@@ -141,8 +140,8 @@ export const useUserStore = defineStore("user", {
 
         return true;
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Delete user error:", error);
         return false;
       } finally {

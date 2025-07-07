@@ -43,7 +43,7 @@
                 <div class="mt-8 p-4 bg-yellow-50 border border-yellow-200">
                     <h3 class="text-sm font-medium mb-2">Demo Credentials:</h3>
                     <p class="text-xs text-gray-600 mb-1">Email: jawadazizi052@gmail.com</p>
-                    <p class="text-xs text-gray-600">Password: devGanteng</p>
+                    <p class="text-xs text-gray-600">Password: admin123</p>
                 </div>
 
                 <div class="text-center mt-8">

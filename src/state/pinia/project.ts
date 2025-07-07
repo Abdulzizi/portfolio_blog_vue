@@ -84,14 +84,12 @@ export const useProjectStore = defineStore("project", {
           `${this.apiUrl}/v1/projects`
         );
 
-        // console.log(res.data.status_code);
-
         const { list, meta } = res.data.data;
         this.projects = list;
         this.meta = meta ?? null;
       } catch (err) {
-        const e = err as AxiosError<{ message: string }>;
-        this.error = e.response?.data?.message || e.message;
+        const e = err as AxiosError<{ errors: string }>;
+        this.error = e.response?.data?.errors || e.message;
         console.error("Fetch projects error:", err);
 
         this.projects = [];
@@ -114,8 +112,8 @@ export const useProjectStore = defineStore("project", {
 
         this.meta = null;
       } catch (err) {
-        const e = err as AxiosError<{ message: string }>;
-        this.error = e.response?.data?.message || e.message;
+        const e = err as AxiosError<{ errors: string }>;
+        this.error = e.response?.data?.errors || e.message;
         console.error("Fetch project error:", err);
 
         this.project = [];
@@ -138,8 +136,8 @@ export const useProjectStore = defineStore("project", {
 
         this.meta = null;
       } catch (err) {
-        const e = err as AxiosError<{ message: string }>;
-        this.error = e.response?.data?.message || e.message;
+        const e = err as AxiosError<{ errors: string }>;
+        this.error = e.response?.data?.errors || e.message;
         console.error("Fetch project error:", err);
 
         this.project = [];
@@ -167,8 +165,8 @@ export const useProjectStore = defineStore("project", {
           return false;
         }
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Add project error:", error);
         return false;
       }
@@ -195,8 +193,8 @@ export const useProjectStore = defineStore("project", {
           return false;
         }
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Update project error:", error);
         return false;
       } finally {
@@ -212,8 +210,8 @@ export const useProjectStore = defineStore("project", {
         await axios.delete(`${this.apiUrl}/v1/projects/${id}`);
         await this.fetchAllProjects();
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        this.error = axiosError.response?.data?.message || axiosError.message;
+        const axiosError = error as AxiosError<{ errors: string }>;
+        this.error = axiosError.response?.data?.errors || axiosError.message;
         console.error("Delete project error:", error);
       } finally {
         this.isLoading = false;
