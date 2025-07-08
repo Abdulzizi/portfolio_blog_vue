@@ -84,7 +84,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">
                                 <label class="inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" v-model="project.is_published"
+                                    <input type="checkbox" :checked="project.is_published"
                                         @change="onTogglePublish(project)" class="sr-only peer" />
                                     <div
                                         class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-green-500 relative transition-colors duration-300">
@@ -217,23 +217,22 @@ const deleteProject = async (projectId) => {
 }
 
 async function onTogglePublish(project) {
-    const newStatus = project.is_published ? 1 : 0;
+    const newStatus = !project.is_published;
 
     try {
         const success = await projectStore.updateProject(project.id, {
-            is_published: newStatus,
+            is_published: newStatus ? 1 : 0,
         });
 
         if (success) {
+            project.is_published = newStatus;
             showSuccessToast('Publish status updated successfully.');
         } else {
             showErrorToast('Error', 'Failed to update publish status.');
-            project.is_published = newStatus === 1 ? 0 : 1;
         }
     } catch (error) {
         showErrorToast('Error', error.message || 'An error occurred while updating publish status.');
         console.error('Error updating publish status:', error);
-        project.is_published = newStatus === 1 ? 0 : 1;
     }
 }
 

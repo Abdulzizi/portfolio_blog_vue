@@ -75,13 +75,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/state/pinia'
 import { ChevronDown, Menu } from 'lucide-vue-next'
 
 const user = ref<{ username: string } | null>(null)
 
+const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -121,6 +123,12 @@ const getUserUsername = async () => {
         console.error(error);
     }
 }
+
+watch(() => route.fullPath, (newPath) => {
+    if (!newPath.includes('/404')) {
+        localStorage.setItem('lastVisitedRoute', newPath);
+    }
+}, { immediate: true })
 
 onMounted(() => {
     document.addEventListener('click', handleClickOutside)

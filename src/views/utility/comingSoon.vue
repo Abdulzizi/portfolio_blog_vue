@@ -13,7 +13,7 @@
             <div>
                 <router-link to="/">
                     <Button
-                        class="bg-yellow-300 border border-black text-2xl px-8 py-6 hover:bg-yellow-400 transition-colors font-black">
+                        class="bg-yellow-300 border border-black text-3xl px-8 py-8 font-black hover:bg-yellow-400 transition-colors">
                         BACK TO HOME
                     </Button>
                 </router-link>
